@@ -1,0 +1,22 @@
+Columns,Count,Info,Type,Unique_value
+battery_power,2000.0,Total energy a battery can store in one time measured in mAh,int64,1094.0
+blue,2000.0,Has bluetooth or not,int64,2.0
+clock_speed,2000.0,speed at which microprocessor executes instructions,float64,26.0
+dual_sim,2000.0,Has dual sim support or not,int64,2.0
+fc,2000.0,Front Camera mega pixels,int64,20.0
+four_g,2000.0,Has 4G or not,int64,2.0
+int_memory,2000.0,Internal Memory in Gigabytes,int64,63.0
+m_dep,2000.0,Mobile Depth in cm,float64,10.0
+mobile_wt,2000.0,Weight of mobile phone,int64,121.0
+n_cores,2000.0,Number of cores of processor,int64,8.0
+pc,2000.0,Primary Camera mega pixels,int64,21.0
+px_height,2000.0,Pixel Resolution Height,int64,1137.0
+px_width,2000.0,Pixel Resolution Width,int64,1109.0
+ram,2000.0,Random Access Memory in Megabytes,int64,1562.0
+sc_h,2000.0,Screen Height of mobile in cm,int64,15.0
+sc_w,2000.0,Screen Width of mobile in cm,int64,19.0
+talk_time,2000.0,longest time that a single battery charge will last when you are,int64,19.0
+three_g,2000.0,Has 3G or not,int64,2.0
+touch_screen,2000.0,Has touch screen or not,int64,2.0
+wifi,2000.0,Has wifi or not,int64,2.0
+price_range,2000.0,"This is the target variable with value of 0(low cost), 1(medium cost), 2(high cost) and 3(very high cost).",int64,4.0
