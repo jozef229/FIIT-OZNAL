@@ -189,5 +189,6 @@ addCol(train_mobile, "talk_time")
 
 print(train_mobile.head())
 # %%
-print(train_mobile.head())
+
+
 # %%
