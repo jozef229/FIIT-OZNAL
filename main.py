@@ -1,9 +1,14 @@
 # %%
 
+from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from scipy import stats
+
+# %%
 
 # Set display
 pd.set_option("display.max_rows", None)
@@ -190,5 +195,80 @@ addCol(train_mobile, "talk_time")
 print(train_mobile.head())
 # %%
 
+
+def iqr_outliers(dataset, bottom_quantile=0.25, top_quantile=0.75):
+    Q1 = dataset.quantile(bottom_quantile)
+    Q3 = dataset.quantile(top_quantile)
+    IQR = Q3 - Q1
+    dataset_out = dataset[
+        ~((dataset < (Q1 - 1.5 * IQR)) | (dataset > (Q3 + 1.5 * IQR))).any(axis=1)
+    ]
+    return dataset_out
+
+
+def z_score_outliers(dataset, threshold=3):
+    dataset_out = dataset[
+        (np.abs(stats.zscore(dataset.select_dtypes(exclude="object"))) < threshold).all(
+            axis=1
+        )
+    ]
+    return dataset_out
+
+
+# %%
+
+def CorrelationMatrixSelectFeatures(dataset, size_of_delet_corelation=0.95):
+    corr_matrix = dataset.corr().abs()
+    upper = corr_matrix.where(
+        np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+    select_column = [
+        column
+        for column in upper.columns
+        if any(upper[column] > size_of_delet_corelation)
+    ]
+    dataset_out = dataset.drop(dataset[select_column], axis=1)
+    return dataset_out
+
+
+def vifSelectFeatures(dataset, thresh=100.0):
+    variables = list(range(dataset.shape[1]))
+    dropped = True
+    while dropped:
+        dropped = False
+        vif = [
+            variance_inflation_factor(dataset.iloc[:, variables].values, ix)
+            for ix in range(dataset.iloc[:, variables].shape[1])
+        ]
+        maxloc = vif.index(max(vif))
+
+        if max(vif) > thresh:
+            del variables[maxloc]
+            dropped = True
+    dataset_out = dataset.iloc[:, variables]
+    return dataset_out
+
+# %%
+
+
+scaler = MinMaxScaler()
+scaled_values = scaler.fit_transform(train_mobile)
+train_mobile.loc[:, :] = scaled_values
+
+# %%
+
+print("standard = ", train_mobile.shape)
+train_mobil_cor = CorrelationMatrixSelectFeatures(train_mobile)
+print("cor = ", train_mobil_cor.shape)
+
+train_mobil_vif = vifSelectFeatures(train_mobile)
+print("vif = ", train_mobil_vif.shape)
+
+
+print("standard = ", train_mobile.shape)
+train_mobil_iqr = iqr_outliers(train_mobile)
+print("iqr = ", train_mobil_iqr.shape)
+
+train_mobil_z_score = z_score_outliers(train_mobile)
+print("z_score = ", train_mobil_z_score.shape)
 
 # %%
