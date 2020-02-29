@@ -1,12 +1,36 @@
 # %%
 
-from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-from statsmodels.stats.outliers_influence import variance_inflation_factor
+from sklearn.metrics import fbeta_score
 from scipy import stats
+from sklearn import datasets, metrics
+from sklearn.decomposition import PCA
+from sklearn.metrics import recall_score
+from sklearn.discriminant_analysis import (LinearDiscriminantAnalysis,
+                                           QuadraticDiscriminantAnalysis)
+from sklearn.ensemble import (AdaBoostClassifier, ExtraTreesClassifier,
+                              GradientBoostingClassifier,
+                              RandomForestClassifier)
+from sklearn.feature_selection import SelectKBest, VarianceThreshold, chi2
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import (RBF, ConstantKernel,
+                                              ExpSineSquared,
+                                              RationalQuadratic)
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (accuracy_score, classification_report,
+                             confusion_matrix, f1_score)
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.svm import SVC, SVR
+from sklearn.tree import DecisionTreeClassifier
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tools.tools import add_constant
 
 # %%
 
@@ -134,7 +158,7 @@ def printInfoData(name_dataset, df, df_with_col, primary_col):
 # %%
 # printInfoData("Mobile", mobile, mobile.price_range, "price_range")
 # printInfoData("Mobile", test_mobile, mobile.price_range, "price_range")
-printInfoData("Mobile", train_mobile, mobile.price_range, "price_range")
+# printInfoData("Mobile", train_mobile, mobile.price_range, "price_range")
 
 
 # %%
@@ -149,19 +173,9 @@ def addCelMoreOrLessMedian(df, col):
                                    > df[col].median() else 0, axis=1)
 
 
-def addCelMoreOrLessStd(df, col):
-    df[col + ">Std"] = df.apply(lambda row: 1 if row[col]
-                                > df[col].std() else 0, axis=1)
-
-
 def addCelMoreOrLessQuantile25(df, col):
     df[col + ">Quantile25"] = df.apply(lambda row: 1 if row[col]
                                        > df[col].quantile(0.25) else 0, axis=1)
-
-
-def addCelMoreOrLessQuantile50(df, col):
-    df[col + ">Quantile50"] = df.apply(lambda row: 1 if row[col]
-                                       > df[col].quantile(0.50) else 0, axis=1)
 
 
 def addCelMoreOrLessQuantile75(df, col):
@@ -172,27 +186,10 @@ def addCelMoreOrLessQuantile75(df, col):
 def addCol(df, col):
     addCelMoreOrLessMean(df, col)
     addCelMoreOrLessMedian(df, col)
-    addCelMoreOrLessStd(df, col)
     addCelMoreOrLessQuantile25(df, col)
-    addCelMoreOrLessQuantile50(df, col)
     addCelMoreOrLessQuantile75(df, col)
 
 
-addCol(train_mobile, "battery_power")
-addCol(train_mobile, "clock_speed")
-addCol(train_mobile, "int_memory")
-addCol(train_mobile, "m_dep")
-addCol(train_mobile, "mobile_wt")
-addCol(train_mobile, "n_cores")
-addCol(train_mobile, "px_height")
-addCol(train_mobile, "px_width")
-addCol(train_mobile, "pc")
-addCol(train_mobile, "ram")
-addCol(train_mobile, "sc_h")
-addCol(train_mobile, "sc_w")
-addCol(train_mobile, "talk_time")
-
-print(train_mobile.head())
 # %%
 
 
@@ -247,28 +244,206 @@ def vifSelectFeatures(dataset, thresh=100.0):
     dataset_out = dataset.iloc[:, variables]
     return dataset_out
 
-# %%
 
-
-scaler = MinMaxScaler()
-scaled_values = scaler.fit_transform(train_mobile)
-train_mobile.loc[:, :] = scaled_values
+def selectKBest(dataset, X_data, y_data):
+    dataset_out = SelectKBest(chi2, k=2).fit_transform(X_data, y_data)
+    return dataset_out
 
 # %%
 
-print("standard = ", train_mobile.shape)
-train_mobil_cor = CorrelationMatrixSelectFeatures(train_mobile)
-print("cor = ", train_mobil_cor.shape)
 
-train_mobil_vif = vifSelectFeatures(train_mobile)
-print("vif = ", train_mobil_vif.shape)
+classifiers = [
+    AdaBoostClassifier(),
+    DecisionTreeClassifier(max_depth=5),
+    ExtraTreesClassifier(n_estimators=5, criterion="entropy", max_features=2),
+    GaussianNB(),
+    GaussianProcessClassifier(1.0 * RBF(1.0)),
+    KNeighborsClassifier(),
+    LinearDiscriminantAnalysis(),
+    LogisticRegression(
+        penalty="l1", dual=False, max_iter=110, solver="liblinear", multi_class="auto"
+    ),
+    MLPClassifier(alpha=1, max_iter=1000),
+    RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+    SVC(kernel="poly", C=0.025),
+    SVC(kernel="linear", C=0.025),
+    SVC(kernel="sigmoid", gamma=2),
+    SVC(kernel="rbf", gamma=2, C=1),
+    QuadraticDiscriminantAnalysis(),
+]
 
 
-print("standard = ", train_mobile.shape)
-train_mobil_iqr = iqr_outliers(train_mobile)
-print("iqr = ", train_mobil_iqr.shape)
+classifiersNames = [
+    "AdaBoost",
+    "Decision Tree",
+    "Extra Trees",
+    "Naive Bayes",
+    "Gaussian Process",
+    "Nearest Neighbors",
+    "Linear Discriminant Analysis",
+    "Logistic Regression",
+    "Neural Net",
+    "Random Forest",
+    "SVM Poly",
+    "SVM Sigmoid",
+    "SVM Linear ",
+    "SVM RBF",
+    "QDA",
+]
 
-train_mobil_z_score = z_score_outliers(train_mobile)
-print("z_score = ", train_mobil_z_score.shape)
+
+outliersName = [
+    "iqr",
+    "z_score",
+]
+
+featureSelectionName = [
+    "cor",
+    "vif"
+]
+
+
+# %%
+
+
+def printFinalTable(df_print, nameOutlier, nameFeatureSelection, model, nameIndex, train, test):
+    df_print = df_print.append({"Outliers": outliersName[nameOutlier],
+                                "Feature Selection": featureSelectionName[nameFeatureSelection],
+                                "Model": classifiersNames[nameIndex],
+                                "ACC": accuracy_score(train, test),
+                                "Recall macro": recall_score(train, test, average="macro"),
+                                "Recall micro": recall_score(train, test, average="micro"),
+                                "Recall weighted": recall_score(train, test, average="weighted"),
+                                "F1 macro": f1_score(train, test, average="macro", labels=np.unique(test)),
+                                "F1 micro": f1_score(train, test, average="micro", labels=np.unique(test)),
+                                "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
+    print(df_print.head())
+
+
+def classificationModel(typeModel, X, y):
+    model = classifiers[typeModel]
+    model.fit(X, y)
+    return model
+
+
+# %%
+
+
+train_mobile = pd.read_csv('dataset/mobile/train.csv')
+main_value = 'price_range'
+train_mobile_without_price = train_mobile.copy()
+del train_mobile_without_price[main_value]
+# y_data = train_mobile[main_value]
+
+addCol(train_mobile, "battery_power")
+addCol(train_mobile, "clock_speed")
+addCol(train_mobile, "int_memory")
+addCol(train_mobile, "m_dep")
+addCol(train_mobile, "mobile_wt")
+addCol(train_mobile, "n_cores")
+addCol(train_mobile, "px_height")
+addCol(train_mobile, "px_width")
+addCol(train_mobile, "pc")
+addCol(train_mobile, "ram")
+addCol(train_mobile, "sc_h")
+addCol(train_mobile, "sc_w")
+addCol(train_mobile, "talk_time")
+
+
+other_value = train_mobile_without_price.columns.tolist()
+X_data = train_mobile[other_value]
+y_data = train_mobile[main_value]
+
+train, test = train_test_split(df, test_size=0.2)
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_data, y_data, test_size=0.2, shuffle=False
+)
+
+df_stats_model = pd.DataFrame()
+
+for i in range(len(outliersName)):
+    df_mobile = X_train.copy()
+    if i == 0:
+        df_mobile = iqr_outliers(df_mobile)
+    if i == 1:
+        z_score_outliers(df_mobile)
+    for u in range(len(featureSelectionName)):
+
+        if u == 0:
+            df_mobile = CorrelationMatrixSelectFeatures(df_mobile)
+        if u == 1:
+            df_mobile = vifSelectFeatures(df_mobile)
+
+        for i in range(len(classifiers)):
+            model = classificationModel(i, X_train, y_train)
+            X_test_predict = model.predict(X_test)
+            printFinalTable(df_stats_model, i, u, model,
+                            i, X_test_predict, y_test)
+
+
+df_stats_model.to_csv(r'Dataset/columns_stats_model.csv',
+                      index=False, header=True)
+
+
+# print("standard = ", train_mobile.shape)
+# train_mobil_iqr = iqr_outliers(train_mobile)
+# print("iqr = ", train_mobil_iqr.shape)
+
+# train_mobil_z_score = z_score_outliers(train_mobile)
+# print("z_score = ", train_mobil_z_score.shape)
+
+
+# addCol(train_mobile, "battery_power")
+# addCol(train_mobile, "clock_speed")
+# addCol(train_mobile, "int_memory")
+# addCol(train_mobile, "m_dep")
+# addCol(train_mobile, "mobile_wt")
+# addCol(train_mobile, "n_cores")
+# addCol(train_mobile, "px_height")
+# addCol(train_mobile, "px_width")
+# addCol(train_mobile, "pc")
+# addCol(train_mobile, "ram")
+# addCol(train_mobile, "sc_h")
+# addCol(train_mobile, "sc_w")
+# addCol(train_mobile, "talk_time")
+
+
+# print("standard = ", train_mobile.shape)
+# train_mobil_cor = CorrelationMatrixSelectFeatures(train_mobile)
+# print("cor = ", train_mobil_cor.shape)
+
+# train_mobil_vif = vifSelectFeatures(train_mobile)
+# print("vif = ", train_mobil_vif.shape)
+
+
+# df = pd.read_csv(
+#     "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
+# )
+
+# df = df.replace("virginica", 3)
+# df = df.replace("versicolor", 2)
+# df = df.replace("setosa", 1)
+# df["species"] = df["species"].astype(int)
+
+# other_value = df.columns.tolist()
+
+# main_value = 'species'
+# other_value = list(filter(lambda x: x != main_value, help))
+
+# X_data = df[other_value]
+# y_data = df[main_value]
+
+
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X_data, y_data, test_size=0.2, shuffle=False
+# )
+
+# for i in range(len(classifiers)):
+#     model = classificationModel(i, X_train, y_train)
+#     X_test_predict = model.predict(X_test)
+#     printClassificationReport(model, i, X_test_predict, y_test)
+
 
 # %%
