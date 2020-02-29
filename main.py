@@ -307,6 +307,8 @@ featureSelectionName = [
 
 
 def printFinalTable(df_print, nameOutlier, nameFeatureSelection, model, nameIndex, train, test):
+    print(nameOutlier)
+    print(nameFeatureSelection)
     df_print = df_print.append({"Outliers": outliersName[nameOutlier],
                                 "Feature Selection": featureSelectionName[nameFeatureSelection],
                                 "Model": classifiersNames[nameIndex],
@@ -327,13 +329,15 @@ def classificationModel(typeModel, X, y):
 
 
 # %%
+X_train, X_test, y_train, y_test = train_test_split(
+    X_data, y_data, test_size=0.2, shuffle=False
+)
 
+
+# %%
 
 train_mobile = pd.read_csv('dataset/mobile/train.csv')
 main_value = 'price_range'
-train_mobile_without_price = train_mobile.copy()
-del train_mobile_without_price[main_value]
-# y_data = train_mobile[main_value]
 
 addCol(train_mobile, "battery_power")
 addCol(train_mobile, "clock_speed")
@@ -349,39 +353,37 @@ addCol(train_mobile, "sc_h")
 addCol(train_mobile, "sc_w")
 addCol(train_mobile, "talk_time")
 
-
-other_value = train_mobile_without_price.columns.tolist()
-X_data = train_mobile[other_value]
-y_data = train_mobile[main_value]
-
-train, test = train_test_split(df, test_size=0.2)
-
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X_data, y_data, test_size=0.2, shuffle=False
-)
-
+train, test = train_test_split(train_mobile, test_size=0.2)
+y_test = test[main_value]
 df_stats_model = pd.DataFrame()
+initialProduct =
+initialFeature =
 
-for i in range(len(outliersName)):
-    df_mobile = X_train.copy()
-    if i == 0:
+for outlier in range(len(outliersName)):
+    df_mobile = train.copy()
+    if outlier == 0:
         df_mobile = iqr_outliers(df_mobile)
-    if i == 1:
+    if outlier == 1:
         z_score_outliers(df_mobile)
-    for u in range(len(featureSelectionName)):
+    for selectFeature in range(len(featureSelectionName)):
 
-        if u == 0:
+        if selectFeature == 0:
             df_mobile = CorrelationMatrixSelectFeatures(df_mobile)
-        if u == 1:
+        if selectFeature == 1:
             df_mobile = vifSelectFeatures(df_mobile)
 
-        for i in range(len(classifiers)):
-            model = classificationModel(i, X_train, y_train)
+        for modelNumber in range(len(classifiers)):
+            other_value = df_mobile.columns.tolist()
+            y_train = df_mobile[main_value]
+            X_train = df_mobile[list(
+                filter(lambda x: x != main_value, other_value))]
+            X_test = test[list(filter(lambda x: x != main_value, other_value))]
+            model = classificationModel(modelNumber, X_train, y_train)
             X_test_predict = model.predict(X_test)
-            printFinalTable(df_stats_model, i, u, model,
-                            i, X_test_predict, y_test)
+            printFinalTable(df_stats_model, outlier, selectFeature, model,
+                            modelNumber, X_test_predict, y_test)
 
+print("last")
 
 df_stats_model.to_csv(r'Dataset/columns_stats_model.csv',
                       index=False, header=True)
@@ -444,6 +446,45 @@ df_stats_model.to_csv(r'Dataset/columns_stats_model.csv',
 #     model = classificationModel(i, X_train, y_train)
 #     X_test_predict = model.predict(X_test)
 #     printClassificationReport(model, i, X_test_predict, y_test)
+
+
+# %%
+
+# df = pd.read_csv(
+#     "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
+# )
+
+# df = df.replace("virginica", 3)
+# df = df.replace("versicolor", 2)
+# df = df.replace("setosa", 1)
+# df["species"] = df["species"].astype(int)
+
+# other_value = df.columns.tolist()
+
+# main_value = 'species'
+# other_value = list(filter(lambda x: x != main_value, other_value))
+
+# X_data = df[other_value]
+# y_data = df[main_value]
+
+
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X_data, y_data, test_size=0.2, shuffle=False
+# )
+
+# # %%
+
+# print(X_train.head())
+# print(X_test.head())
+# print(y_train.head())
+# print(y_test.head())
+
+
+# %%
+
+df = pd.read_csv(
+    "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
+)
 
 
 # %%
