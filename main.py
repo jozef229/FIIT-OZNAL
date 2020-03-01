@@ -190,9 +190,6 @@ def addCol(df, col):
     addCelMoreOrLessQuantile75(df, col)
 
 
-# %%
-
-
 def iqr_outliers(dataset, bottom_quantile=0.25, top_quantile=0.75):
     Q1 = dataset.quantile(bottom_quantile)
     Q3 = dataset.quantile(top_quantile)
@@ -211,8 +208,6 @@ def z_score_outliers(dataset, threshold=3):
     ]
     return dataset_out
 
-
-# %%
 
 def CorrelationMatrixSelectFeatures(dataset, size_of_delet_corelation=0.95):
     corr_matrix = dataset.corr().abs()
@@ -249,8 +244,6 @@ def selectKBest(dataset, X_data, y_data):
     dataset_out = SelectKBest(chi2, k=2).fit_transform(X_data, y_data)
     return dataset_out
 
-# %%
-
 
 classifiers = [
     AdaBoostClassifier(),
@@ -265,7 +258,6 @@ classifiers = [
     ),
     MLPClassifier(alpha=1, max_iter=1000),
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
-    SVC(kernel="poly", C=0.025),
     SVC(kernel="linear", C=0.025),
     SVC(kernel="sigmoid", gamma=2),
     SVC(kernel="rbf", gamma=2, C=1),
@@ -284,7 +276,6 @@ classifiersNames = [
     "Logistic Regression",
     "Neural Net",
     "Random Forest",
-    "SVM Poly",
     "SVM Sigmoid",
     "SVM Linear ",
     "SVM RBF",
@@ -303,23 +294,22 @@ featureSelectionName = [
 ]
 
 
-# %%
-
-
-def printFinalTable(df_print, nameOutlier, nameFeatureSelection, model, nameIndex, train, test):
-    print(nameOutlier)
-    print(nameFeatureSelection)
-    df_print = df_print.append({"Outliers": outliersName[nameOutlier],
-                                "Feature Selection": featureSelectionName[nameFeatureSelection],
-                                "Model": classifiersNames[nameIndex],
-                                "ACC": accuracy_score(train, test),
-                                "Recall macro": recall_score(train, test, average="macro"),
-                                "Recall micro": recall_score(train, test, average="micro"),
-                                "Recall weighted": recall_score(train, test, average="weighted"),
-                                "F1 macro": f1_score(train, test, average="macro", labels=np.unique(test)),
-                                "F1 micro": f1_score(train, test, average="micro", labels=np.unique(test)),
-                                "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
-    print(df_print.head())
+def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelection, model, nameIndex, train, test, df_actual):
+    return df_print.append({
+        "Records": records,
+        "Features": features,
+        "Outliers": outliersName[nameOutlier],
+        "Outliers records": df_actual.shape[0],
+        "Feature Selection": featureSelectionName[nameFeatureSelection],
+        "Features with FS": df_actual.shape[1],
+        "Model": classifiersNames[nameIndex],
+        "ACC": accuracy_score(train, test),
+        "Recall macro": recall_score(train, test, average="macro"),
+        "Recall micro": recall_score(train, test, average="micro"),
+        "Recall weighted": recall_score(train, test, average="weighted"),
+        "F1 macro": f1_score(train, test, average="macro", labels=np.unique(test)),
+        "F1 micro": f1_score(train, test, average="micro", labels=np.unique(test)),
+        "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
 
 
 def classificationModel(typeModel, X, y):
@@ -329,12 +319,7 @@ def classificationModel(typeModel, X, y):
 
 
 # %%
-X_train, X_test, y_train, y_test = train_test_split(
-    X_data, y_data, test_size=0.2, shuffle=False
-)
 
-
-# %%
 
 train_mobile = pd.read_csv('dataset/mobile/train.csv')
 main_value = 'price_range'
@@ -356,32 +341,43 @@ addCol(train_mobile, "talk_time")
 train, test = train_test_split(train_mobile, test_size=0.2)
 y_test = test[main_value]
 df_stats_model = pd.DataFrame()
-initialProduct =
-initialFeature =
+initialProduct = train_mobile.shape[0] - 1
+initialFeature = train_mobile.shape[1]
 
 for outlier in range(len(outliersName)):
-    df_mobile = train.copy()
+    df_mobile_out = train.copy()
     if outlier == 0:
-        df_mobile = iqr_outliers(df_mobile)
+        df_mobile_out = iqr_outliers(df_mobile_out)
     if outlier == 1:
-        z_score_outliers(df_mobile)
-    for selectFeature in range(len(featureSelectionName)):
-
-        if selectFeature == 0:
-            df_mobile = CorrelationMatrixSelectFeatures(df_mobile)
-        if selectFeature == 1:
-            df_mobile = vifSelectFeatures(df_mobile)
-
-        for modelNumber in range(len(classifiers)):
+        z_score_outliers(df_mobile_out)
+    if df_mobile_out.shape[0] != 0:
+        for selectFeature in range(len(featureSelectionName)):
+            df_mobile = df_mobile_out.copy()
+            if selectFeature == 0:
+                df_mobile = CorrelationMatrixSelectFeatures(df_mobile)
+            if selectFeature == 1:
+                df_mobile = vifSelectFeatures(df_mobile)
             other_value = df_mobile.columns.tolist()
             y_train = df_mobile[main_value]
             X_train = df_mobile[list(
                 filter(lambda x: x != main_value, other_value))]
-            X_test = test[list(filter(lambda x: x != main_value, other_value))]
-            model = classificationModel(modelNumber, X_train, y_train)
-            X_test_predict = model.predict(X_test)
-            printFinalTable(df_stats_model, outlier, selectFeature, model,
-                            modelNumber, X_test_predict, y_test)
+            X_test = test[list(
+                filter(lambda x: x != main_value, other_value))]
+            for modelNumber in range(len(classifiers)):
+                if df_mobile.shape[1] != 0:
+                    try:
+                        model = classificationModel(
+                            modelNumber, X_train, y_train)
+                        X_test_predict = model.predict(X_test)
+                        df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
+                                                         modelNumber, X_test_predict, y_test, df_mobile)
+                    except ValueError:
+                        print("This is an error message!")
+                    print(str(outlier) + "z" + str(len(outliersName)))
+                    print(str(selectFeature) + "z" +
+                          str(len(featureSelectionName)))
+                    print(str(modelNumber) + "z" + str(len(classifiers)))
+                    print("")
 
 print("last")
 
@@ -389,102 +385,12 @@ df_stats_model.to_csv(r'Dataset/columns_stats_model.csv',
                       index=False, header=True)
 
 
-# print("standard = ", train_mobile.shape)
-# train_mobil_iqr = iqr_outliers(train_mobile)
-# print("iqr = ", train_mobil_iqr.shape)
-
-# train_mobil_z_score = z_score_outliers(train_mobile)
-# print("z_score = ", train_mobil_z_score.shape)
-
-
-# addCol(train_mobile, "battery_power")
-# addCol(train_mobile, "clock_speed")
-# addCol(train_mobile, "int_memory")
-# addCol(train_mobile, "m_dep")
-# addCol(train_mobile, "mobile_wt")
-# addCol(train_mobile, "n_cores")
-# addCol(train_mobile, "px_height")
-# addCol(train_mobile, "px_width")
-# addCol(train_mobile, "pc")
-# addCol(train_mobile, "ram")
-# addCol(train_mobile, "sc_h")
-# addCol(train_mobile, "sc_w")
-# addCol(train_mobile, "talk_time")
-
-
-# print("standard = ", train_mobile.shape)
-# train_mobil_cor = CorrelationMatrixSelectFeatures(train_mobile)
-# print("cor = ", train_mobil_cor.shape)
-
-# train_mobil_vif = vifSelectFeatures(train_mobile)
-# print("vif = ", train_mobil_vif.shape)
-
-
-# df = pd.read_csv(
-#     "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
-# )
-
-# df = df.replace("virginica", 3)
-# df = df.replace("versicolor", 2)
-# df = df.replace("setosa", 1)
-# df["species"] = df["species"].astype(int)
-
-# other_value = df.columns.tolist()
-
-# main_value = 'species'
-# other_value = list(filter(lambda x: x != main_value, help))
-
-# X_data = df[other_value]
-# y_data = df[main_value]
-
-
-# X_train, X_test, y_train, y_test = train_test_split(
-#     X_data, y_data, test_size=0.2, shuffle=False
-# )
-
-# for i in range(len(classifiers)):
-#     model = classificationModel(i, X_train, y_train)
-#     X_test_predict = model.predict(X_test)
-#     printClassificationReport(model, i, X_test_predict, y_test)
-
-
 # %%
 
-# df = pd.read_csv(
-#     "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
-# )
+cm = sns.light_palette("green", as_cmap=True)
 
-# df = df.replace("virginica", 3)
-# df = df.replace("versicolor", 2)
-# df = df.replace("setosa", 1)
-# df["species"] = df["species"].astype(int)
+styled = df_stats_model.style.background_gradient(cmap=cm)
 
-# other_value = df.columns.tolist()
-
-# main_value = 'species'
-# other_value = list(filter(lambda x: x != main_value, other_value))
-
-# X_data = df[other_value]
-# y_data = df[main_value]
-
-
-# X_train, X_test, y_train, y_test = train_test_split(
-#     X_data, y_data, test_size=0.2, shuffle=False
-# )
-
-# # %%
-
-# print(X_train.head())
-# print(X_test.head())
-# print(y_train.head())
-# print(y_test.head())
-
-
-# %%
-
-df = pd.read_csv(
-    "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
-)
-
+styled.to_excel('Dataset/styled_model.xlsx', engine='openpyxl')
 
 # %%
