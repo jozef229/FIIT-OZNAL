@@ -1,5 +1,6 @@
 # %%
 
+import warnings
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -40,6 +41,8 @@ pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", -1)
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # %%
 
@@ -198,7 +201,7 @@ def iqr_outliers(dataset, bottom_quantile=0.25, top_quantile=0.75):
     Q3 = dataset.quantile(top_quantile)
     IQR = Q3 - Q1
     dataset_out = dataset[
-        ((dataset > (Q1 - 1.5 * IQR)) and (dataset < (Q3 + 1.5 * IQR))).any(axis=1)
+        ((dataset < (Q1 - 1.5 * IQR)) | (dataset > (Q3 + 1.5 * IQR))).any(axis=1)
     ]
     return dataset_out
 
@@ -250,9 +253,9 @@ def selectKBest(dataset, X_data, y_data):
 
 classifiersParams = {
     "AdaBoost": {
-        "n_estimators": range(10, 50),
-        "base_estimator__max_depth": range(1, 5),
-        "algorithm": ("SAMME", "SAMME.R"),
+        'n_estimators': range(50, 100),
+        'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
+        'algorithm': ['SAMME', 'SAMME.R'],
     },
     "Decision Tree": {
         "max_samples": [0.5, 1.0],
@@ -362,7 +365,7 @@ featureSelectionName = [
 ]
 
 hyperparameterEstimation = [
-    "nothing"
+    "nothing",
     "randomized search",
     "grid search"
 ]
@@ -387,56 +390,95 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
         "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
 
 
-def classificationModel(model, typeModel, X, y, heNumber, iteration=10):
-    validation = True
+param_dist = {
+    'n_estimators': range(50, 100),
+    'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
+    'algorithm': ['SAMME', 'SAMME.R'],
+}
+
+# param_dist = {
+#     'n_estimators': [50, 100],
+#     'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
+# }
+
+
+# "AdaBoost": {
+#         "n_estimators": range(10, 50),
+#         "base_estimator__max_depth": range(1, 5),
+#         "algorithm": ("SAMME", "SAMME.R"),
+#     },
+
+
+def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
+    print(typeModel)
+    print(classifiersNames[typeModel])
+    print(param_dist)
+    print(classifiersParams[classifiersNames[typeModel]])
+    print("heNumber ", heNumber)
     if heNumber == 0:
+        print("withou")
         model = classifiers[typeModel]
+        print("without-true")
     if heNumber == 1:
         try:
+            print("haha")
             model = RandomizedSearchCV(
-                classifiers[typeModel], param_distributions=classifiersParams[classifiersNames[i]], n_iter=iteration)
+                classifiers[typeModel], param_distributions=param_dist, n_iter=iteration)
+            # model = RandomizedSearchCV(
+            #     classifiers[typeModel], aram_grid=classifiersParams[classifiersNames[typeModel]], n_iter=iteration)
+            print("nope")
         except KeyError:
             validation = False
     if heNumber == 2:
         try:
             model = GridSearchCV(
-                classifiers[typeModel], param_grid=classifiersParams[classifiersNames[i]])
+                classifiers[typeModel], param_grid=classifiersParams[classifiersNames[typeModel]])
+            # model = GridSearchCV(
+            #     classifiers[typeModel], param_grid=param_dist)
         except KeyError:
             validation = False
-
+    print(model)
+    print(validation)
     model.fit(X, y)
-    return validation
+    print("skoncilo to ------")
+    return model
 
 
-# for i in range(len(classifiersNames)):
-#     try:
-#         print("number: ", i, "name: ", classifiersNames[i], "class:", classifiersParams[classifiersNames[i]])
-#     except KeyError:
-#         print("error")
+for i in range(len(classifiersNames)):
+    try:
+        print("number: ", i, "name: ",
+              classifiersNames[i], "class:", classifiersParams[classifiersNames[i]])
+        print("-----")
+        print(classifiersParams[classifiersNames[i]])
+        print("-----;")
+        print(param_dist)
+        print("/////////")
+    except KeyError:
+        print("error")
 
 
 # %%
-dataset_without_add_column = train_mobile.copy()
-dataset_with_add_column = train_mobile.copy()
+# dataset_without_add_column = train_mobile.copy()
+# dataset_with_add_column = train_mobile.copy()
 
-addCol(dataset_with_add_column, "battery_power")
-addCol(dataset_with_add_column, "clock_speed")
-addCol(dataset_with_add_column, "int_memory")
-addCol(dataset_with_add_column, "m_dep")
-addCol(dataset_with_add_column, "mobile_wt")
-addCol(dataset_with_add_column, "n_cores")
-addCol(dataset_with_add_column, "px_height")
-addCol(dataset_with_add_column, "px_width")
-addCol(dataset_with_add_column, "pc")
-addCol(dataset_with_add_column, "ram")
-addCol(dataset_with_add_column, "sc_h")
-addCol(dataset_with_add_column, "sc_w")
-addCol(dataset_with_add_column, "talk_time")
+# addCol(dataset_with_add_column, "battery_power")
+# addCol(dataset_with_add_column, "clock_speed")
+# addCol(dataset_with_add_column, "int_memory")
+# addCol(dataset_with_add_column, "m_dep")
+# addCol(dataset_with_add_column, "mobile_wt")
+# addCol(dataset_with_add_column, "n_cores")
+# addCol(dataset_with_add_column, "px_height")
+# addCol(dataset_with_add_column, "px_width")
+# addCol(dataset_with_add_column, "pc")
+# addCol(dataset_with_add_column, "ram")
+# addCol(dataset_with_add_column, "sc_h")
+# addCol(dataset_with_add_column, "sc_w")
+# addCol(dataset_with_add_column, "talk_time")
 
-# help print
-print(dataset_with_add_column.head())
+# # help print
+# print(dataset_with_add_column.head())
 
-train_mobile = dataset_with_add_column.copy()
+# train_mobile = dataset_with_add_column.copy()
 
 
 # %%
@@ -486,17 +528,29 @@ for outlier in range(len(outliersName)):
             for modelNumber in range(len(classifiers)):
                 for hypEstimation in range(len(hyperparameterEstimation)):
                     if df_mobile.shape[1] != 0:
-                        try:
-                            if classificationModel(model, modelNumber, X_train, y_train, hypEstimation) = true:
-                                X_test_predict = model.predict(X_test)
-                                df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
-                                                                 modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
-                        except ValueError:
-                            print("This is an error message!")
-                        print(str(outlier) + "z" + str(len(outliersName)))
-                        print(str(selectFeature) + "z" +
+                        errT = "no"
+                        # try:
+                        validation = True
+                        model = classificationModel(
+                            validation, modelNumber, X_train, y_train, hypEstimation)
+                        print(validation)
+                        if validation == True:
+                            print("ooo")
+                            X_test_predict = model.predict(X_test)
+                            print("jjj2")
+                            df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
+                                                             modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
+                            print("jjj")
+                        # except ValueError:
+                        #     print("This is an error message!")
+                        #     errT = "jj"
+                        print("OT ", str(outlier) + "z" +
+                              str(len(outliersName)))
+                        print("SF ", str(selectFeature) + "z" +
                               str(len(featureSelectionName)))
-                        print(str(modelNumber) + "z" + str(len(classifiers)))
+                        print("MO ", str(modelNumber) +
+                              "z" + str(len(classifiers)))
+                        print("HE ", hypEstimation, "error ", errT)
                         print("")
 
 print("last")
@@ -506,7 +560,7 @@ df_stats_model.to_csv(r'Dataset/columns_stats_model.csv',
 
 
 # %%
-
+print(df_stats_model)
 cm = sns.light_palette("green", as_cmap=True)
 
 styled = df_stats_model.style.background_gradient(cmap=cm)
@@ -514,6 +568,5 @@ styled = df_stats_model.style.background_gradient(cmap=cm)
 styled.to_excel('Dataset/styled_model.xlsx', engine='openpyxl')
 
 # %%
-
 
 # %%
