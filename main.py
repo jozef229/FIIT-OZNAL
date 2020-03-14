@@ -31,6 +31,7 @@ from sklearn.svm import SVC, SVR
 from sklearn.tree import DecisionTreeClassifier
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from statsmodels.tools.tools import add_constant
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 # %%
 
@@ -39,11 +40,6 @@ pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", -1)
-
-# https://www.kaggle.com/iabhishekofficial/mobile-price-classification#train.csv
-train_mobile = pd.read_csv('dataset/mobile/train.csv')
-test_mobile = pd.read_csv('dataset/mobile/test.csv')
-mobile = pd.concat([train_mobile, test_mobile])
 
 # %%
 
@@ -150,18 +146,25 @@ def printInfoData(name_dataset, df, df_with_col, primary_col):
         if col != "quality":
             printBoxPlot("price_range", col, df)
             printBoxPlot2("price_range", col, df)
-
     df_stats.to_csv(r'Dataset/columns_stats.csv', index=False, header=True)
     df_type.to_csv(r'Dataset/columns_type.csv', index=False, header=True)
 
 
 # %%
-# printInfoData("Mobile", mobile, mobile.price_range, "price_range")
-# printInfoData("Mobile", test_mobile, mobile.price_range, "price_range")
+
+train_mobile = pd.read_csv('dataset/mobile/train.csv')
+
+# Print and save all information about train_model
+# https://www.kaggle.com/iabhishekofficial/mobile-price-classification#train.csv
 # printInfoData("Mobile", train_mobile, mobile.price_range, "price_range")
 
 
 # %%
+# help print
+print(train_mobile.head())
+
+# %%
+
 
 def addCelMoreOrLessMean(df, col):
     df[col + ">Mean"] = df.apply(lambda row: 1 if row[col]
@@ -195,7 +198,7 @@ def iqr_outliers(dataset, bottom_quantile=0.25, top_quantile=0.75):
     Q3 = dataset.quantile(top_quantile)
     IQR = Q3 - Q1
     dataset_out = dataset[
-        ~((dataset < (Q1 - 1.5 * IQR)) | (dataset > (Q3 + 1.5 * IQR))).any(axis=1)
+        ((dataset > (Q1 - 1.5 * IQR)) and (dataset < (Q3 + 1.5 * IQR))).any(axis=1)
     ]
     return dataset_out
 
@@ -245,41 +248,106 @@ def selectKBest(dataset, X_data, y_data):
     return dataset_out
 
 
-classifiers = [
-    AdaBoostClassifier(),
-    DecisionTreeClassifier(max_depth=5),
-    ExtraTreesClassifier(n_estimators=5, criterion="entropy", max_features=2),
-    GaussianNB(),
-    GaussianProcessClassifier(1.0 * RBF(1.0)),
-    KNeighborsClassifier(),
-    LinearDiscriminantAnalysis(),
-    LogisticRegression(
-        penalty="l1", dual=False, max_iter=110, solver="liblinear", multi_class="auto"
-    ),
-    MLPClassifier(alpha=1, max_iter=1000),
-    RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
-    SVC(kernel="linear", C=0.025),
-    SVC(kernel="sigmoid", gamma=2),
-    SVC(kernel="rbf", gamma=2, C=1),
-    QuadraticDiscriminantAnalysis(),
-]
+classifiersParams = {
+    "AdaBoost": {
+        "n_estimators": range(10, 50),
+        "base_estimator__max_depth": range(1, 5),
+        "algorithm": ("SAMME", "SAMME.R"),
+    },
+    "Decision Tree": {
+        "max_samples": [0.5, 1.0],
+        "max_features": [1, 2, 4],
+        "bootstrap": [True, False],
+        "bootstrap_features": [True, False],
+        "criterion": ("gini", "entropy"),
+    },
+    "Extra Trees": {
+        "n_estimators": range(10, 50),
+        "criterion": ("gini", "entropy"),
+    },
+    "Gaussian Process": {
+        "kernel": ConstantKernel(1.0, constant_value_bounds="fixed")
+        * RBF(1.0, length_scale_bounds="fixed"),
+        "alpha": [1e1],
+        "optimizer": ["fmin_l_bfgs_b"],
+        "n_restarts_optimizer": [1, 2, 3],
+        "normalize_y": [False],
+        "copy_X_train": [True],
+        "random_state": [0],
+    },
+    "Nearest Neighbors": {
+        "n_neighbors": range(4, 10),
+        "leaf_size": [1, 3, 5],
+        "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
+        "n_jobs": [-1],
+    },
+    "Logistic Regression": [
+        {"penalty": ["l1"], "C": np.logspace(-5, 5)},
+        {"penalty": ["l2"], "C": np.logspace(-5, 5)},
+        {"penalty": ["elasticnet"], "C": np.logspace(-5, 5)},
+        {"penalty": ["none"], "C": np.logspace(-5, 5)},
+    ],
+    "Neural Net": {
+        "solver": ["lbfgs", "sgd", "adam"],
+        "max_iter": [1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000],
+        "alpha": 10.0 ** -np.arange(1, 10),
+        "hidden_layer_sizes": np.arange(10, 15),
+        "random_state": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    },
+    "Random Forest": {
+        "max_depth": range(20, 60),
+        "n_estimators": range(10, 40),
+        "max_features": ["sqrt", "log2", None],
+    },
+    "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
+    "SVM Linear": {
+        "kernel": ["linear"],
+        "degree": range(1, 5),
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    },
+    "SVM RBF": {
+        "kernel": ["rbf"],
+        "degree": range(1, 5),
+        "gamma": np.logspace(-4, 3, 30),
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    },
+}
 
 
 classifiersNames = [
     "AdaBoost",
     "Decision Tree",
     "Extra Trees",
-    "Naive Bayes",
     "Gaussian Process",
     "Nearest Neighbors",
-    "Linear Discriminant Analysis",
     "Logistic Regression",
     "Neural Net",
     "Random Forest",
     "SVM Sigmoid",
-    "SVM Linear ",
+    "SVM Linear",
     "SVM RBF",
     "QDA",
+    "Naive Bayes",
+    "Linear Discriminant Analysis",
+]
+
+classifiers = [
+    AdaBoostClassifier(),
+    DecisionTreeClassifier(max_depth=5),
+    ExtraTreesClassifier(n_estimators=5, criterion="entropy", max_features=2),
+    GaussianProcessClassifier(1.0 * RBF(1.0)),
+    KNeighborsClassifier(),
+    LogisticRegression(
+        penalty="l1", dual=False, max_iter=110, solver="liblinear", multi_class="auto"
+    ),
+    MLPClassifier(alpha=1, max_iter=1000),
+    RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+    SVC(kernel="sigmoid", gamma=2),
+    SVC(kernel="linear", C=0.025),
+    SVC(kernel="rbf", gamma=2, C=1),
+    QuadraticDiscriminantAnalysis(),
+    GaussianNB(),
+    LinearDiscriminantAnalysis(),
 ]
 
 
@@ -293,10 +361,17 @@ featureSelectionName = [
     "vif"
 ]
 
+hyperparameterEstimation = [
+    "nothing"
+    "randomized search",
+    "grid search"
+]
 
-def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelection, model, nameIndex, train, test, df_actual):
+
+def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelection, model, nameIndex, train, test, df_actual, hypEstimation):
     return df_print.append({
         "Records": records,
+        "Hyperparameter estimation": hyperparameterEstimation[hypEstimation],
         "Features": features,
         "Outliers": outliersName[nameOutlier],
         "Outliers records": df_actual.shape[0],
@@ -312,14 +387,59 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
         "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
 
 
-def classificationModel(typeModel, X, y):
-    model = classifiers[typeModel]
+def classificationModel(model, typeModel, X, y, heNumber, iteration=10):
+    validation = True
+    if heNumber == 0:
+        model = classifiers[typeModel]
+    if heNumber == 1:
+        try:
+            model = RandomizedSearchCV(
+                classifiers[typeModel], param_distributions=classifiersParams[classifiersNames[i]], n_iter=iteration)
+        except KeyError:
+            validation = False
+    if heNumber == 2:
+        try:
+            model = GridSearchCV(
+                classifiers[typeModel], param_grid=classifiersParams[classifiersNames[i]])
+        except KeyError:
+            validation = False
+
     model.fit(X, y)
-    return model
+    return validation
+
+
+# for i in range(len(classifiersNames)):
+#     try:
+#         print("number: ", i, "name: ", classifiersNames[i], "class:", classifiersParams[classifiersNames[i]])
+#     except KeyError:
+#         print("error")
 
 
 # %%
+dataset_without_add_column = train_mobile.copy()
+dataset_with_add_column = train_mobile.copy()
 
+addCol(dataset_with_add_column, "battery_power")
+addCol(dataset_with_add_column, "clock_speed")
+addCol(dataset_with_add_column, "int_memory")
+addCol(dataset_with_add_column, "m_dep")
+addCol(dataset_with_add_column, "mobile_wt")
+addCol(dataset_with_add_column, "n_cores")
+addCol(dataset_with_add_column, "px_height")
+addCol(dataset_with_add_column, "px_width")
+addCol(dataset_with_add_column, "pc")
+addCol(dataset_with_add_column, "ram")
+addCol(dataset_with_add_column, "sc_h")
+addCol(dataset_with_add_column, "sc_w")
+addCol(dataset_with_add_column, "talk_time")
+
+# help print
+print(dataset_with_add_column.head())
+
+train_mobile = dataset_with_add_column.copy()
+
+
+# %%
 
 train_mobile = pd.read_csv('dataset/mobile/train.csv')
 main_value = 'price_range'
@@ -364,20 +484,20 @@ for outlier in range(len(outliersName)):
             X_test = test[list(
                 filter(lambda x: x != main_value, other_value))]
             for modelNumber in range(len(classifiers)):
-                if df_mobile.shape[1] != 0:
-                    try:
-                        model = classificationModel(
-                            modelNumber, X_train, y_train)
-                        X_test_predict = model.predict(X_test)
-                        df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
-                                                         modelNumber, X_test_predict, y_test, df_mobile)
-                    except ValueError:
-                        print("This is an error message!")
-                    print(str(outlier) + "z" + str(len(outliersName)))
-                    print(str(selectFeature) + "z" +
-                          str(len(featureSelectionName)))
-                    print(str(modelNumber) + "z" + str(len(classifiers)))
-                    print("")
+                for hypEstimation in range(len(hyperparameterEstimation)):
+                    if df_mobile.shape[1] != 0:
+                        try:
+                            if classificationModel(model, modelNumber, X_train, y_train, hypEstimation) = true:
+                                X_test_predict = model.predict(X_test)
+                                df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
+                                                                 modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
+                        except ValueError:
+                            print("This is an error message!")
+                        print(str(outlier) + "z" + str(len(outliersName)))
+                        print(str(selectFeature) + "z" +
+                              str(len(featureSelectionName)))
+                        print(str(modelNumber) + "z" + str(len(classifiers)))
+                        print("")
 
 print("last")
 
@@ -392,5 +512,8 @@ cm = sns.light_palette("green", as_cmap=True)
 styled = df_stats_model.style.background_gradient(cmap=cm)
 
 styled.to_excel('Dataset/styled_model.xlsx', engine='openpyxl')
+
+# %%
+
 
 # %%
