@@ -251,13 +251,6 @@ def selectKBest(dataset, X_data, y_data):
     return dataset_out
 
 
-# ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * \
-#     RBF(1.0, length_scale_bounds="fixed")
-# ker_rq = ConstantKernel(1.0, constant_value_bounds="fixed") * \
-#     RationalQuadratic(alpha=0.1, length_scale=1)
-# ker_expsine = ConstantKernel(1.0, constant_value_bounds="fixed") * \
-#     ExpSineSquared(1.0, 5.0, periodicity_bounds=(1e-2, 1e1))
-
 classifiersParams = {
     "AdaBoost": {
         'n_estimators': range(50, 100),
@@ -391,25 +384,6 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
         "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
 
 
-# param_dist = {
-#     'n_estimators': range(50, 100),
-#     'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
-#     'algorithm': ['SAMME', 'SAMME.R'],
-# }
-
-# param_dist = {
-#     'n_estimators': [50, 100],
-#     'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
-# }
-
-
-# "AdaBoost": {
-#         "n_estimators": range(10, 50),
-#         "base_estimator__max_depth": range(1, 5),
-#         "algorithm": ("SAMME", "SAMME.R"),
-#     },
-
-
 def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
     print(typeModel)
     print(classifiersNames[typeModel])
@@ -418,8 +392,6 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
         model = classifiers[typeModel]
     if heNumber == 1:
         try:
-            # model = RandomizedSearchCV(
-            #     classifiers[typeModel], param_distributions=param_dist, n_iter=iteration)
             model = RandomizedSearchCV(
                 classifiers[typeModel], param_distributions=classifiersParams[classifiersNames[typeModel]], n_iter=iteration)
         except KeyError:
@@ -428,8 +400,6 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
         try:
             model = GridSearchCV(
                 classifiers[typeModel], param_grid=classifiersParams[classifiersNames[typeModel]])
-            # model = GridSearchCV(
-            #     classifiers[typeModel], param_grid=param_dist)
         except KeyError:
             validation = False
     print(model)
@@ -441,19 +411,6 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
         return model
     else:
         return model.best_estimator_
-
-
-# for i in range(len(classifiersNames)):
-#     try:
-#         print("number: ", i, "name: ",
-#               classifiersNames[i], "class:", classifiersParams[classifiersNames[i]])
-#         print("-----")
-#         print(classifiersParams[classifiersNames[i]])
-#         print("-----;")
-#         print(param_dist)
-#         print("/////////")
-#     except KeyError:
-#         print("error")
 
 
 # %%
