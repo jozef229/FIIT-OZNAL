@@ -253,29 +253,29 @@ def selectKBest(dataset, X_data, y_data):
 
 classifiersParams = {
     "AdaBoost": {
-        'n_estimators': range(50, 100),
+        'n_estimators': range(60, 90),
         'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
         'algorithm': ['SAMME', 'SAMME.R'],
     },
     "Decision Tree": {
-        'min_samples_split': range(10, 500, 20),
+        'min_samples_split': range(10, 400, 20),
         'max_features': ['sqrt', 'log2'],
-        'max_depth': [4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 30, 40, 50, 70, 90, 120, 150],
+        'max_depth': [4, 5, 6, 7, 9, 10, 11, 12, 15, 30, 40, 70, 120, 150],
         'criterion': ['gini', 'entropy'],
     },
     "Extra Trees": {
-        "n_estimators": range(10, 50),
+        "n_estimators": range(15, 40),
         "criterion": ("gini", "entropy"),
     },
     "Gaussian Process": {
-        "kernel": [DotProduct(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [Matern(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [RBF(i) for i in [0.2, 0.5, 1, 2, 3, 5]],
+        "kernel": [DotProduct(i) for i in [0.5, 1, 5]] + [Matern(i) for i in [0.5, 1, 5]] + [RBF(i) for i in [0.5, 1, 5]],
         "optimizer": ["fmin_l_bfgs_b"],
-        "n_restarts_optimizer": [1, 2, 3],
+        "n_restarts_optimizer": [1, 3],
         "copy_X_train": [True],
         "random_state": [0],
     },
     "Nearest Neighbors": {
-        "n_neighbors": range(4, 10),
+        "n_neighbors": range(5, 9),
         "leaf_size": [1, 3, 5],
         "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
         "n_jobs": [-1],
@@ -291,8 +291,8 @@ classifiersParams = {
         "random_state": [0, 1, 3, 6, 9],
     },
     "Random Forest": {
-        "max_depth": [20, 24, 28, 30, 34, 38, 42, 46, 48, 52, 56, 60, 64],
-        "n_estimators": [10, 14, 18, 20, 24, 28, 32, 36, 38, 42, 46, 50, 54],
+        "max_depth": [20, 24, 28, 30, 38, 42, 46, 48, 56, 60, 64],
+        "n_estimators": [10, 14, 18, 20, 24, 28, 36, 38, 42, 46, 50, 54],
         "max_features": ["sqrt", "log2", None],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
@@ -309,12 +309,73 @@ classifiersParams = {
     },
 }
 
+classifiersParamsRandomSearch = {
+    "AdaBoost": {
+        'n_estimators': range(50, 150),
+        'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
+        'algorithm': ['SAMME', 'SAMME.R'],
+    },
+    "Decision Tree": {
+        'min_samples_split': range(10, 500, 20),
+        'max_features': ['sqrt', 'log2'],
+        'max_depth': [4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 30, 40, 50, 70, 90, 120, 150],
+        'criterion': ['gini', 'entropy'],
+    },
+    "Extra Trees": {
+        "n_estimators": range(10, 70),
+        "criterion": ("gini", "entropy"),
+    },
+    # "Gaussian Process": {
+    #     "kernel": [DotProduct(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [Matern(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [RBF(i) for i in [0.2, 0.5, 1, 2, 3, 5]],
+    #     "optimizer": ["fmin_l_bfgs_b"],
+    #     "n_restarts_optimizer": [1, 2, 3, 4, 5],
+    #     "copy_X_train": [True],
+    #     "random_state": [0],
+    # },
+    "Nearest Neighbors": {
+        "n_neighbors": range(3, 15),
+        "leaf_size": [1, 3, 5, 7],
+        "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
+        "n_jobs": [-1],
+    },
+    "Logistic Regression": {
+        "penalty": ["l1", "l2", "elasticnet"],
+        "C": np.logspace(-5, 5),
+        "solver": ['saga'],
+        "l1_ratio": [0, 0.5, 1],
+    },
+    "Neural Net": {
+        "solver": ["lbfgs", "sgd", "adam"],
+        "max_iter": [1000, 1400, 1800, 2000, 2500],
+        "alpha": 10.0 ** -np.arange(1, 4),
+        "hidden_layer_sizes": np.arange(10, 15),
+        "random_state": [0, 1, 3, 6, 9],
+    },
+    "Random Forest": {
+        "max_depth": range(20, 80),
+        "n_estimators": range(10, 80),
+        "max_features": ["sqrt", "log2", None],
+    },
+    "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
+    "SVM Linear": {
+        "kernel": ["linear"],
+        "degree": range(1, 8),
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    },
+    "SVM RBF": {
+        "kernel": ["rbf"],
+        "degree": range(1, 8),
+        "gamma": np.logspace(-4, 3, 30),
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    },
+}
+
 
 classifiersNames = [
     "AdaBoost",
     "Decision Tree",
     "Extra Trees",
-    "Gaussian Process",
+    # "Gaussian Process",
     "Nearest Neighbors",
     "Logistic Regression",
     "Neural Net",
@@ -331,7 +392,7 @@ classifiers = [
     AdaBoostClassifier(),
     DecisionTreeClassifier(max_depth=5),
     ExtraTreesClassifier(n_estimators=5, criterion="entropy", max_features=2),
-    GaussianProcessClassifier(1.0 * RBF(1.0)),
+    # GaussianProcessClassifier(1.0 * RBF(1.0)),
     KNeighborsClassifier(),
     LogisticRegression(
         penalty="l1", dual=False, max_iter=110, solver="liblinear", multi_class="auto"
@@ -393,7 +454,7 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
     if heNumber == 1:
         try:
             model = RandomizedSearchCV(
-                classifiers[typeModel], param_distributions=classifiersParams[classifiersNames[typeModel]], n_iter=iteration)
+                classifiers[typeModel], param_distributions=classifiersParamsRandomSearch[classifiersNames[typeModel]], n_iter=iteration)
         except KeyError:
             validation = False
     if heNumber == 2:
