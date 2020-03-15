@@ -1,15 +1,14 @@
 # %%
 
 import warnings
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from sklearn.metrics import fbeta_score
 from scipy import stats
 from sklearn import datasets, metrics
 from sklearn.decomposition import PCA
-from sklearn.metrics import recall_score
 from sklearn.discriminant_analysis import (LinearDiscriminantAnalysis,
                                            QuadraticDiscriminantAnalysis)
 from sklearn.ensemble import (AdaBoostClassifier, ExtraTreesClassifier,
@@ -17,13 +16,15 @@ from sklearn.ensemble import (AdaBoostClassifier, ExtraTreesClassifier,
                               RandomForestClassifier)
 from sklearn.feature_selection import SelectKBest, VarianceThreshold, chi2
 from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import (RBF, ConstantKernel,
-                                              ExpSineSquared,
+from sklearn.gaussian_process.kernels import (RBF, ConstantKernel, DotProduct,
+                                              ExpSineSquared, Matern,
                                               RationalQuadratic)
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, classification_report,
-                             confusion_matrix, f1_score)
-from sklearn.model_selection import train_test_split
+                             confusion_matrix, f1_score, fbeta_score,
+                             recall_score)
+from sklearn.model_selection import (GridSearchCV, RandomizedSearchCV,
+                                     train_test_split)
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
@@ -32,7 +33,6 @@ from sklearn.svm import SVC, SVR
 from sklearn.tree import DecisionTreeClassifier
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from statsmodels.tools.tools import add_constant
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 # %%
 
@@ -251,6 +251,13 @@ def selectKBest(dataset, X_data, y_data):
     return dataset_out
 
 
+# ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * \
+#     RBF(1.0, length_scale_bounds="fixed")
+# ker_rq = ConstantKernel(1.0, constant_value_bounds="fixed") * \
+#     RationalQuadratic(alpha=0.1, length_scale=1)
+# ker_expsine = ConstantKernel(1.0, constant_value_bounds="fixed") * \
+#     ExpSineSquared(1.0, 5.0, periodicity_bounds=(1e-2, 1e1))
+
 classifiersParams = {
     "AdaBoost": {
         'n_estimators': range(50, 100),
@@ -258,23 +265,19 @@ classifiersParams = {
         'algorithm': ['SAMME', 'SAMME.R'],
     },
     "Decision Tree": {
-        "max_samples": [0.5, 1.0],
-        "max_features": [1, 2, 4],
-        "bootstrap": [True, False],
-        "bootstrap_features": [True, False],
-        "criterion": ("gini", "entropy"),
+        'min_samples_split': range(10, 500, 20),
+        'max_features': ['sqrt', 'log2'],
+        'max_depth': [4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 30, 40, 50, 70, 90, 120, 150],
+        'criterion': ['gini', 'entropy'],
     },
     "Extra Trees": {
         "n_estimators": range(10, 50),
         "criterion": ("gini", "entropy"),
     },
     "Gaussian Process": {
-        "kernel": ConstantKernel(1.0, constant_value_bounds="fixed")
-        * RBF(1.0, length_scale_bounds="fixed"),
-        "alpha": [1e1],
+        "kernel": [DotProduct(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [Matern(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [RBF(i) for i in [0.2, 0.5, 1, 2, 3, 5]],
         "optimizer": ["fmin_l_bfgs_b"],
         "n_restarts_optimizer": [1, 2, 3],
-        "normalize_y": [False],
         "copy_X_train": [True],
         "random_state": [0],
     },
@@ -284,22 +287,19 @@ classifiersParams = {
         "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
         "n_jobs": [-1],
     },
-    "Logistic Regression": [
-        {"penalty": ["l1"], "C": np.logspace(-5, 5)},
-        {"penalty": ["l2"], "C": np.logspace(-5, 5)},
-        {"penalty": ["elasticnet"], "C": np.logspace(-5, 5)},
-        {"penalty": ["none"], "C": np.logspace(-5, 5)},
-    ],
+    "Logistic Regression": {
+        "penalty": ["l1", "l2", "elasticnet"], "C": np.logspace(-5, 5), "solver": ['saga']
+    },
     "Neural Net": {
         "solver": ["lbfgs", "sgd", "adam"],
-        "max_iter": [1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000],
-        "alpha": 10.0 ** -np.arange(1, 10),
-        "hidden_layer_sizes": np.arange(10, 15),
-        "random_state": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "max_iter": [1000, 1400, 1800, 2000],
+        "alpha": 10.0 ** -np.arange(1, 4),
+        "hidden_layer_sizes": np.arange(10, 13),
+        "random_state": [0, 1, 3, 6, 9],
     },
     "Random Forest": {
-        "max_depth": range(20, 60),
-        "n_estimators": range(10, 40),
+        "max_depth": [20, 24, 28, 30, 34, 38, 42, 46, 48, 52, 56, 60, 64],
+        "n_estimators": [10, 14, 18, 20, 24, 28, 32, 36, 38, 42, 46, 50, 54],
         "max_features": ["sqrt", "log2", None],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
@@ -373,6 +373,7 @@ hyperparameterEstimation = [
 
 def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelection, model, nameIndex, train, test, df_actual, hypEstimation):
     return df_print.append({
+        "Model Params": model,
         "Records": records,
         "Hyperparameter estimation": hyperparameterEstimation[hypEstimation],
         "Features": features,
@@ -390,11 +391,11 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
         "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
 
 
-param_dist = {
-    'n_estimators': range(50, 100),
-    'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
-    'algorithm': ['SAMME', 'SAMME.R'],
-}
+# param_dist = {
+#     'n_estimators': range(50, 100),
+#     'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
+#     'algorithm': ['SAMME', 'SAMME.R'],
+# }
 
 # param_dist = {
 #     'n_estimators': [50, 100],
@@ -412,21 +413,15 @@ param_dist = {
 def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
     print(typeModel)
     print(classifiersNames[typeModel])
-    print(param_dist)
-    print(classifiersParams[classifiersNames[typeModel]])
     print("heNumber ", heNumber)
     if heNumber == 0:
-        print("withou")
         model = classifiers[typeModel]
-        print("without-true")
     if heNumber == 1:
         try:
-            print("haha")
-            model = RandomizedSearchCV(
-                classifiers[typeModel], param_distributions=param_dist, n_iter=iteration)
             # model = RandomizedSearchCV(
-            #     classifiers[typeModel], aram_grid=classifiersParams[classifiersNames[typeModel]], n_iter=iteration)
-            print("nope")
+            #     classifiers[typeModel], param_distributions=param_dist, n_iter=iteration)
+            model = RandomizedSearchCV(
+                classifiers[typeModel], param_distributions=classifiersParams[classifiersNames[typeModel]], n_iter=iteration)
         except KeyError:
             validation = False
     if heNumber == 2:
@@ -440,21 +435,25 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
     print(model)
     print(validation)
     model.fit(X, y)
+
     print("skoncilo to ------")
-    return model
+    if heNumber == 0:
+        return model
+    else:
+        return model.best_estimator_
 
 
-for i in range(len(classifiersNames)):
-    try:
-        print("number: ", i, "name: ",
-              classifiersNames[i], "class:", classifiersParams[classifiersNames[i]])
-        print("-----")
-        print(classifiersParams[classifiersNames[i]])
-        print("-----;")
-        print(param_dist)
-        print("/////////")
-    except KeyError:
-        print("error")
+# for i in range(len(classifiersNames)):
+#     try:
+#         print("number: ", i, "name: ",
+#               classifiersNames[i], "class:", classifiersParams[classifiersNames[i]])
+#         print("-----")
+#         print(classifiersParams[classifiersNames[i]])
+#         print("-----;")
+#         print(param_dist)
+#         print("/////////")
+#     except KeyError:
+#         print("error")
 
 
 # %%
@@ -533,11 +532,10 @@ for outlier in range(len(outliersName)):
                         validation = True
                         model = classificationModel(
                             validation, modelNumber, X_train, y_train, hypEstimation)
-                        print(validation)
+                        print("a je to tu: ", model)
                         if validation == True:
                             print("ooo")
                             X_test_predict = model.predict(X_test)
-                            print("jjj2")
                             df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
                                                              modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
                             print("jjj")
@@ -552,6 +550,8 @@ for outlier in range(len(outliersName)):
                               "z" + str(len(classifiers)))
                         print("HE ", hypEstimation, "error ", errT)
                         print("")
+                        if modelNumber >= len(classifiersParams):
+                            break
 
 print("last")
 
@@ -566,6 +566,8 @@ cm = sns.light_palette("green", as_cmap=True)
 styled = df_stats_model.style.background_gradient(cmap=cm)
 
 styled.to_excel('Dataset/styled_model.xlsx', engine='openpyxl')
+
+# %%
 
 # %%
 
