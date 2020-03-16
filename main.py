@@ -1,5 +1,6 @@
 # %%
 
+import time
 import warnings
 
 import matplotlib.pyplot as plt
@@ -267,13 +268,13 @@ classifiersParams = {
         "n_estimators": range(15, 40),
         "criterion": ("gini", "entropy"),
     },
-    "Gaussian Process": {
-        "kernel": [DotProduct(i) for i in [0.5, 1, 5]] + [Matern(i) for i in [0.5, 1, 5]] + [RBF(i) for i in [0.5, 1, 5]],
-        "optimizer": ["fmin_l_bfgs_b"],
-        "n_restarts_optimizer": [1, 3],
-        "copy_X_train": [True],
-        "random_state": [0],
-    },
+    # "Gaussian Process": {
+    #     "kernel": [DotProduct(i) for i in [0.5, 1, 5]] + [Matern(i) for i in [0.5, 1, 5]] + [RBF(i) for i in [0.5, 1, 5]],
+    #     "optimizer": ["fmin_l_bfgs_b"],
+    #     "n_restarts_optimizer": [1, 3],
+    #     "copy_X_train": [True],
+    #     "random_state": [0],
+    # },
     "Nearest Neighbors": {
         "n_neighbors": range(5, 9),
         "leaf_size": [1, 3, 5],
@@ -281,7 +282,10 @@ classifiersParams = {
         "n_jobs": [-1],
     },
     "Logistic Regression": {
-        "penalty": ["l1", "l2", "elasticnet"], "C": np.logspace(-5, 5), "solver": ['saga']
+        "penalty": ["l1", "l2", "elasticnet"],
+        "C": np.logspace(-5, 5),
+        "solver": ['saga'],
+        "l1_ratio": [0, 1],
     },
     "Neural Net": {
         "solver": ["lbfgs", "sgd", "adam"],
@@ -342,7 +346,7 @@ classifiersParamsRandomSearch = {
         "penalty": ["l1", "l2", "elasticnet"],
         "C": np.logspace(-5, 5),
         "solver": ['saga'],
-        "l1_ratio": [0, 0.5, 1],
+        "l1_ratio": [0, 1],
     },
     "Neural Net": {
         "solver": ["lbfgs", "sgd", "adam"],
@@ -446,9 +450,6 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
 
 
 def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
-    print(typeModel)
-    print(classifiersNames[typeModel])
-    print("heNumber ", heNumber)
     if heNumber == 0:
         model = classifiers[typeModel]
     if heNumber == 1:
@@ -463,11 +464,8 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
                 classifiers[typeModel], param_grid=classifiersParams[classifiersNames[typeModel]])
         except KeyError:
             validation = False
-    print(model)
-    print(validation)
     model.fit(X, y)
 
-    print("skoncilo to ------")
     if heNumber == 0:
         return model
     else:
@@ -502,6 +500,7 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
 
 train_mobile = pd.read_csv('dataset/mobile/train.csv')
 main_value = 'price_range'
+
 
 addCol(train_mobile, "battery_power")
 addCol(train_mobile, "clock_speed")
@@ -543,33 +542,36 @@ for outlier in range(len(outliersName)):
             X_test = test[list(
                 filter(lambda x: x != main_value, other_value))]
             for modelNumber in range(len(classifiers)):
+                # modelNumber += 10
                 for hypEstimation in range(len(hyperparameterEstimation)):
-                    if df_mobile.shape[1] != 0:
-                        errT = "no"
-                        # try:
-                        validation = True
-                        model = classificationModel(
-                            validation, modelNumber, X_train, y_train, hypEstimation)
-                        print("a je to tu: ", model)
-                        if validation == True:
-                            print("ooo")
-                            X_test_predict = model.predict(X_test)
-                            df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
-                                                             modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
-                            print("jjj")
-                        # except ValueError:
-                        #     print("This is an error message!")
-                        #     errT = "jj"
-                        print("OT ", str(outlier) + "z" +
-                              str(len(outliersName)))
-                        print("SF ", str(selectFeature) + "z" +
-                              str(len(featureSelectionName)))
-                        print("MO ", str(modelNumber) +
-                              "z" + str(len(classifiers)))
-                        print("HE ", hypEstimation, "error ", errT)
-                        print("")
-                        if modelNumber >= len(classifiersParams):
-                            break
+                    start_time = time.time()
+                    print(start_time)
+
+                    if modelNumber >= len(classifiersParams) and hypEstimation > 0:
+                        print("Without grid/random search")
+                    else:
+                        if df_mobile.shape[1] != 0:
+                            errT = "no"
+                            try:
+                                validation = True
+                                model = classificationModel(
+                                    validation, modelNumber, X_train, y_train, hypEstimation)
+                                if validation == True:
+                                    X_test_predict = model.predict(X_test)
+                                    df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
+                                                                     modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
+                            except ValueError:
+                                print("This is an error message!")
+                                errT = "jj"
+                            print("OT ", str(outlier) + " z " +
+                                  str(len(outliersName)) + " SF ", str(selectFeature) + "z" +
+                                  str(len(featureSelectionName)) + " MO ", str(modelNumber) +
+                                  "z" + str(len(classifiers)) + " HE ", hypEstimation, "error ", errT)
+
+                            elapsed_time = time.time() - start_time
+                            print("time: ", elapsed_time)
+                            print("")
+
 
 print("last")
 

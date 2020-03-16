@@ -1,57 +1,609 @@
-ACC,F1 macro,F1 micro,F1 weighted,Feature Selection,Features,Features with FS,Hyperparameter estimation,Model,Outliers,Outliers records,Recall macro,Recall micro,Recall weighted,Records
-0.59,0.585220006572052,0.59,0.5958716776283333,cor,73.0,62.0,nothing,AdaBoost,iqr,1548.0,0.7011240491536742,0.59,0.59,1999.0
-0.785,0.7827440672195228,0.785,0.7868576912726446,cor,73.0,62.0,nothing,Decision Tree,iqr,1548.0,0.7959421786375828,0.785,0.785,1999.0
-0.59,0.5908685168770355,0.59,0.59056072566172,cor,73.0,62.0,nothing,Extra Trees,iqr,1548.0,0.5951621677282334,0.59,0.59,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,cor,73.0,62.0,nothing,Gaussian Process,iqr,1548.0,0.066875,0.2675,0.2675,1999.0
-0.9,0.8999220342152173,0.9,0.8997231563947423,cor,73.0,62.0,nothing,Nearest Neighbors,iqr,1548.0,0.9005167444153677,0.9,0.9,1999.0
-0.87,0.8681584520775687,0.87,0.8689075655527461,cor,73.0,62.0,nothing,Logistic Regression,iqr,1548.0,0.8701655912894445,0.87,0.87,1999.0
-0.645,0.6105414177820425,0.645,0.6787630837249177,cor,73.0,62.0,nothing,Neural Net,iqr,1548.0,0.6756311673803761,0.645,0.645,1999.0
-0.6,0.5889498717251705,0.6,0.6090858908422992,cor,73.0,62.0,nothing,Random Forest,iqr,1548.0,0.5858986583804545,0.6,0.6,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,cor,73.0,62.0,nothing,SVM Sigmoid,iqr,1548.0,0.066875,0.2675,0.2675,1999.0
-0.9725,0.9723650558782262,0.9725,0.9724251456760916,cor,73.0,62.0,nothing,SVM Linear,iqr,1548.0,0.9727317670015163,0.9725,0.9725,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,cor,73.0,62.0,nothing,SVM RBF,iqr,1548.0,0.066875,0.2675,0.2675,1999.0
-0.51,0.33770657524613223,0.51,0.6754942422644163,cor,73.0,62.0,nothing,QDA,iqr,1548.0,0.2549537814073499,0.51,0.51,1999.0
-0.7775,0.7666821611963713,0.7775,0.7864651264135731,cor,73.0,62.0,nothing,Naive Bayes,iqr,1548.0,0.7702009248858241,0.7775,0.7775,1999.0
-0.8025,0.8041769270683508,0.8025,0.7976420311616985,cor,73.0,62.0,nothing,Linear Discriminant Analysis,iqr,1548.0,0.8135610638271742,0.8025,0.8025,1999.0
-0.705,0.6998320036011005,0.705,0.7051740417542379,vif,73.0,60.0,nothing,AdaBoost,iqr,1548.0,0.7581716826377145,0.705,0.705,1999.0
-0.7525,0.7545025602025308,0.7525,0.7482797472934729,vif,73.0,60.0,nothing,Decision Tree,iqr,1548.0,0.7662492874357282,0.7525,0.7525,1999.0
-0.5325,0.5281113039098148,0.5325,0.5368210839376966,vif,73.0,60.0,nothing,Extra Trees,iqr,1548.0,0.5351486291486292,0.5325,0.5325,1999.0
-0.2675,0.11000100010000999,0.2675,0.4178039803980398,vif,73.0,60.0,nothing,Gaussian Process,iqr,1548.0,0.1915829145728643,0.2675,0.2675,1999.0
-0.285,0.27859178623670167,0.285,0.294222733342985,vif,73.0,60.0,nothing,Nearest Neighbors,iqr,1548.0,0.28028784233675974,0.285,0.285,1999.0
-0.795,0.7936584318538582,0.795,0.7937131794271253,vif,73.0,60.0,nothing,Logistic Regression,iqr,1548.0,0.7985663258886185,0.795,0.795,1999.0
-0.655,0.6396209481374194,0.655,0.6698007340576748,vif,73.0,60.0,nothing,Neural Net,iqr,1548.0,0.687521057559304,0.655,0.655,1999.0
-0.6425,0.6295551146023693,0.6425,0.6538913414068679,vif,73.0,60.0,nothing,Random Forest,iqr,1548.0,0.6309744681695901,0.6425,0.6425,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,vif,73.0,60.0,nothing,SVM Sigmoid,iqr,1548.0,0.066875,0.2675,0.2675,1999.0
-0.7575,0.7578869291769209,0.7575,0.7547682321575061,vif,73.0,60.0,nothing,SVM Linear,iqr,1548.0,0.7626390308888682,0.7575,0.7575,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,vif,73.0,60.0,nothing,SVM RBF,iqr,1548.0,0.066875,0.2675,0.2675,1999.0
-0.5075,0.33701648296980885,0.5075,0.6710013597620968,vif,73.0,60.0,nothing,QDA,iqr,1548.0,0.25485436893203883,0.5075,0.5075,1999.0
-0.6375,0.5720443158592254,0.6375,0.7015597951653596,vif,73.0,60.0,nothing,Naive Bayes,iqr,1548.0,0.6440548856215513,0.6375,0.6375,1999.0
-0.7625,0.76218213034225,0.7625,0.7602548751614292,vif,73.0,60.0,nothing,Linear Discriminant Analysis,iqr,1548.0,0.7665509133988816,0.7625,0.7625,1999.0
-0.6125,0.606257736915647,0.6125,0.61700873906206,cor,73.0,62.0,nothing,AdaBoost,z_score,1600.0,0.6783393515888265,0.6125,0.6125,1999.0
-0.7825,0.7812040951616108,0.7825,0.7835116004868949,cor,73.0,62.0,nothing,Decision Tree,z_score,1600.0,0.7934471327885038,0.7825,0.7825,1999.0
-0.5425,0.5310598853938288,0.5425,0.5495609463723844,cor,73.0,62.0,nothing,Extra Trees,z_score,1600.0,0.5348463918999808,0.5425,0.5425,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,cor,73.0,62.0,nothing,Gaussian Process,z_score,1600.0,0.066875,0.2675,0.2675,1999.0
-0.8975,0.8972695372015106,0.8975,0.8972529073834383,cor,73.0,62.0,nothing,Nearest Neighbors,z_score,1600.0,0.8976368689500529,0.8975,0.8975,1999.0
-0.865,0.8622823615805569,0.865,0.8649666998631902,cor,73.0,62.0,nothing,Logistic Regression,z_score,1600.0,0.8631656673131327,0.865,0.865,1999.0
-0.6675,0.673728639698437,0.6675,0.6585159466994335,cor,73.0,62.0,nothing,Neural Net,z_score,1600.0,0.7029690788018278,0.6675,0.6675,1999.0
-0.5175,0.5102941118043963,0.5175,0.5208865778149886,cor,73.0,62.0,nothing,Random Forest,z_score,1600.0,0.5084955581210597,0.5175,0.5175,1999.0
-0.235,0.09514170040485831,0.235,0.38056680161943324,cor,73.0,62.0,nothing,SVM Sigmoid,z_score,1600.0,0.05875,0.235,0.235,1999.0
-0.9725,0.9723650558782262,0.9725,0.9724251456760916,cor,73.0,62.0,nothing,SVM Linear,z_score,1600.0,0.9727317670015163,0.9725,0.9725,1999.0
-0.235,0.09514170040485831,0.235,0.38056680161943324,cor,73.0,62.0,nothing,SVM RBF,z_score,1600.0,0.05875,0.235,0.235,1999.0
-0.51,0.33770657524613223,0.51,0.6754942422644163,cor,73.0,62.0,nothing,QDA,z_score,1600.0,0.2549537814073499,0.51,0.51,1999.0
-0.78,0.7689839873081565,0.78,0.7894430835639712,cor,73.0,62.0,nothing,Naive Bayes,z_score,1600.0,0.7742799941868879,0.78,0.78,1999.0
-0.8025,0.8041769270683508,0.8025,0.7976420311616985,cor,73.0,62.0,nothing,Linear Discriminant Analysis,z_score,1600.0,0.8135610638271742,0.8025,0.8025,1999.0
-0.57,0.5553794013507445,0.57,0.5891811580207675,vif,73.0,60.0,nothing,AdaBoost,z_score,1600.0,0.6742006884959013,0.57,0.57,1999.0
-0.8,0.7989447446764244,0.8000000000000002,0.8010977726120458,vif,73.0,60.0,nothing,Decision Tree,z_score,1600.0,0.8045039383274677,0.8,0.8,1999.0
-0.595,0.5838684326098514,0.595,0.6019344358921018,vif,73.0,60.0,nothing,Extra Trees,z_score,1600.0,0.5918948886762943,0.595,0.595,1999.0
-0.2675,0.10552268244575937,0.2675,0.42209072978303747,vif,73.0,60.0,nothing,Gaussian Process,z_score,1600.0,0.066875,0.2675,0.2675,1999.0
-0.77,0.7704974714087983,0.7699999999999999,0.7679586913906807,vif,73.0,60.0,nothing,Nearest Neighbors,z_score,1600.0,0.7751425335832552,0.77,0.77,1999.0
-0.845,0.8422475460454947,0.845,0.8452550717497209,vif,73.0,60.0,nothing,Logistic Regression,z_score,1600.0,0.843668161843624,0.845,0.845,1999.0
-0.6,0.604975464268695,0.6,0.5934644585492863,vif,73.0,60.0,nothing,Neural Net,z_score,1600.0,0.6820360300430202,0.6,0.6,1999.0
-0.585,0.569481288420956,0.585,0.59554274761446,vif,73.0,60.0,nothing,Random Forest,z_score,1600.0,0.5646904363642578,0.585,0.585,1999.0
-0.235,0.09514170040485831,0.235,0.38056680161943324,vif,73.0,60.0,nothing,SVM Sigmoid,z_score,1600.0,0.05875,0.235,0.235,1999.0
-0.905,0.9038468334932924,0.905,0.9049032380343217,vif,73.0,60.0,nothing,SVM Linear,z_score,1600.0,0.9050914731405542,0.905,0.905,1999.0
-0.235,0.09514170040485831,0.235,0.38056680161943324,vif,73.0,60.0,nothing,SVM RBF,z_score,1600.0,0.05875,0.235,0.235,1999.0
-0.5075,0.33701648296980885,0.5075,0.6710013597620968,vif,73.0,60.0,nothing,QDA,z_score,1600.0,0.25485436893203883,0.5075,0.5075,1999.0
-0.79,0.7793074442411138,0.79,0.7995220614242383,vif,73.0,60.0,nothing,Naive Bayes,z_score,1600.0,0.7861352821111371,0.79,0.79,1999.0
-0.805,0.8050619867758377,0.805,0.802005578953829,vif,73.0,60.0,nothing,Linear Discriminant Analysis,z_score,1600.0,0.8104432873328222,0.805,0.805,1999.0
+ACC,F1 macro,F1 micro,F1 weighted,Feature Selection,Features,Features with FS,Hyperparameter estimation,Model,Model Params,Outliers,Outliers records,Recall macro,Recall micro,Recall weighted,Records
+0.4825,0.39668072688273154,0.4825,0.5806612511196039,cor,21.0,21.0,nothing,AdaBoost,"AdaBoostClassifier(algorithm='SAMME.R', base_estimator=None, learning_rate=1.0,
+                   n_estimators=50, random_state=None)",iqr,387.0,0.6452169625246549,0.4825,0.4825,1999.0
+0.71,0.6864688552188551,0.7100000000000001,0.7268181818181817,cor,21.0,21.0,randomized search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.05,
+                   n_estimators=119, random_state=None)",iqr,387.0,0.7019654528478059,0.71,0.71,1999.0
+0.71,0.6873960049291907,0.7100000000000001,0.7259941944731767,cor,21.0,21.0,grid search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.05,
+                   n_estimators=61, random_state=None)",iqr,387.0,0.705857142857143,0.71,0.71,1999.0
+0.81,0.8094357473807018,0.81,0.8077650733589309,cor,21.0,21.0,nothing,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=5,
+                       max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",iqr,387.0,0.8194046182849222,0.81,0.81,1999.0
+0.355,0.29001159428337253,0.35500000000000004,0.41842495794733503,cor,21.0,21.0,randomized search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=50,
+                       max_features='log2', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=210,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",iqr,387.0,0.26255510014693373,0.355,0.355,1999.0
+0.4075,0.40147964655665375,0.4075,0.40274271492442915,cor,21.0,21.0,grid search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=9,
+                       max_features='sqrt', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=30,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",iqr,387.0,0.426191632461691,0.4075,0.4075,1999.0
+0.4675,0.458373668632276,0.4675,0.47248922978686664,cor,21.0,21.0,nothing,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=5, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",iqr,387.0,0.4952837664531168,0.4675,0.4675,1999.0
+0.61,0.6089534784331208,0.61,0.6067296131462836,cor,21.0,21.0,randomized search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=45, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",iqr,387.0,0.6458633315938576,0.61,0.61,1999.0
+0.5975,0.5931430882418118,0.5975,0.5978917253911271,cor,21.0,21.0,grid search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=24, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",iqr,387.0,0.600276783454115,0.5975,0.5975,1999.0
+0.89,0.88871371048171,0.89,0.8889752173828631,cor,21.0,21.0,nothing,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+                     metric_params=None, n_jobs=None, n_neighbors=5, p=2,
+                     weights='uniform')",iqr,387.0,0.8926203027305551,0.89,0.89,1999.0
+0.8775,0.8747274894418454,0.8775,0.876633155570529,cor,21.0,21.0,randomized search,Nearest Neighbors,"KNeighborsClassifier(algorithm='kd_tree', leaf_size=3, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=14, p=2,
+                     weights='uniform')",iqr,387.0,0.8856231381173226,0.8775,0.8775,1999.0
+0.8975,0.8960135162278733,0.8975,0.8966447306432351,cor,21.0,21.0,grid search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=1, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=7, p=2,
+                     weights='uniform')",iqr,387.0,0.8999758014885366,0.8975,0.8975,1999.0
+0.7625,0.7582453196552034,0.7625,0.7603166528239202,cor,21.0,21.0,nothing,Logistic Regression,"LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+                   intercept_scaling=1, l1_ratio=None, max_iter=110,
+                   multi_class='auto', n_jobs=None, penalty='l1',
+                   random_state=None, solver='liblinear', tol=0.0001, verbose=0,
+                   warm_start=False)",iqr,387.0,0.776778897729602,0.7625,0.7625,1999.0
+0.605,0.6031478611167269,0.605,0.600169410936646,cor,21.0,21.0,randomized search,Logistic Regression,"LogisticRegression(C=39069.39937054621, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=1,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l2',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",iqr,387.0,0.6089050751879699,0.605,0.605,1999.0
+0.605,0.6024552111643099,0.605,0.6007794220797115,cor,21.0,21.0,grid search,Logistic Regression,"LogisticRegression(C=4.094915062380427e-05, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=1,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l2',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",iqr,387.0,0.607481580693908,0.605,0.605,1999.0
+0.6325,0.6072126339819455,0.6325,0.6486974663717294,cor,21.0,21.0,nothing,Neural Net,"MLPClassifier(activation='relu', alpha=1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=(100,), learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=None, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",iqr,387.0,0.6119333644550102,0.6325,0.6325,1999.0
+0.66,0.6539493330444177,0.66,0.6586657548344474,cor,21.0,21.0,randomized search,Neural Net,"MLPClassifier(activation='relu', alpha=0.1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=11, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=2500, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=9, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",iqr,387.0,0.6998651823719758,0.66,0.66,1999.0
+0.645,0.6460782944494212,0.645,0.637501218032359,cor,21.0,21.0,grid search,Neural Net,"MLPClassifier(activation='relu', alpha=0.1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=10, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=3, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",iqr,387.0,0.674786043449638,0.645,0.645,1999.0
+0.43,0.42962714354466935,0.42999999999999994,0.4261762582638871,cor,21.0,21.0,nothing,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=5, max_features=1, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=10,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",iqr,387.0,0.47040764788015654,0.43,0.43,1999.0
+0.85,0.8482893894658601,0.85,0.8480719378660556,cor,21.0,21.0,randomized search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=21, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=42,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",iqr,387.0,0.8574437070785453,0.85,0.85,1999.0
+0.845,0.8432041158171811,0.845,0.8430547977985163,cor,21.0,21.0,grid search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=38, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=38,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",iqr,387.0,0.8523143503044517,0.845,0.845,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,cor,21.0,21.0,nothing,SVM Sigmoid,"SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,cor,21.0,21.0,randomized search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,cor,21.0,21.0,grid search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.9725,0.9725382424475166,0.9725,0.972385102211759,cor,21.0,21.0,nothing,SVM Linear,"SVC(C=0.025, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.9730939545629573,0.9725,0.9725,1999.0
+0.9725,0.9722084008173412,0.9725,0.9724087274377683,cor,21.0,21.0,randomized search,SVM Linear,"SVC(C=0.001, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=6, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.9730947104730706,0.9725,0.9725,1999.0
+0.9725,0.9722084008173412,0.9725,0.9724087274377683,cor,21.0,21.0,grid search,SVM Linear,"SVC(C=0.001, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.9730947104730706,0.9725,0.9725,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,cor,21.0,21.0,nothing,SVM RBF,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='rbf', max_iter=-1,
+    probability=False, random_state=None, shrinking=True, tol=0.001,
+    verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,cor,21.0,21.0,randomized search,SVM RBF,"SVC(C=0.1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=5, gamma=35.622478902624444,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.3575,0.2876163043887333,0.3575,0.4233827168425636,cor,21.0,21.0,grid search,SVM RBF,"SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=0.0001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.7915152015862525,0.3575,0.3575,1999.0
+0.5825,0.5258018996237022,0.5825,0.6288331708754589,cor,21.0,21.0,nothing,QDA,"QuadraticDiscriminantAnalysis(priors=None, reg_param=0.0,
+                              store_covariance=False, tol=0.0001)",iqr,387.0,0.5749309758946586,0.5825,0.5825,1999.0
+0.4275,0.4169493009271295,0.4275,0.4392230570746336,cor,21.0,21.0,nothing,Naive Bayes,"GaussianNB(priors=None, var_smoothing=1e-09)",iqr,387.0,0.6742235447275433,0.4275,0.4275,1999.0
+0.8725,0.8710618210639851,0.8725,0.8701930369801701,cor,21.0,21.0,nothing,Linear Discriminant Analysis,"LinearDiscriminantAnalysis(n_components=None, priors=None, shrinkage=None,
+                           solver='svd', store_covariance=False, tol=0.0001)",iqr,387.0,0.8906746031746031,0.8725,0.8725,1999.0
+0.4825,0.39668072688273154,0.4825,0.5806612511196039,vif,21.0,21.0,nothing,AdaBoost,"AdaBoostClassifier(algorithm='SAMME.R', base_estimator=None, learning_rate=1.0,
+                   n_estimators=50, random_state=None)",iqr,387.0,0.6452169625246549,0.4825,0.4825,1999.0
+0.6725,0.6114851102682961,0.6725,0.7223504354544178,vif,21.0,21.0,randomized search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.01,
+                   n_estimators=141, random_state=None)",iqr,387.0,0.6646807313642756,0.6725,0.6725,1999.0
+0.71,0.6873960049291907,0.7100000000000001,0.7259941944731767,vif,21.0,21.0,grid search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.05,
+                   n_estimators=61, random_state=None)",iqr,387.0,0.705857142857143,0.71,0.71,1999.0
+0.825,0.8227376182512981,0.825,0.8235758446608034,vif,21.0,21.0,nothing,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=5,
+                       max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",iqr,387.0,0.8302591390272354,0.825,0.825,1999.0
+0.5575,0.557493666109395,0.5575,0.5540833261829106,vif,21.0,21.0,randomized search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=90,
+                       max_features='log2', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=10,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",iqr,387.0,0.5692328434396051,0.5575,0.5575,1999.0
+0.6475,0.6458850596694321,0.6475,0.6448201816985127,vif,21.0,21.0,grid search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=9,
+                       max_features='sqrt', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=10,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",iqr,387.0,0.6499462121347563,0.6475,0.6475,1999.0
+0.445,0.4307743700604104,0.445,0.4531053058231479,vif,21.0,21.0,nothing,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=5, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",iqr,387.0,0.4849072637678514,0.445,0.445,1999.0
+0.59,0.5880675860285556,0.59,0.5843081216395298,vif,21.0,21.0,randomized search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=36, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",iqr,387.0,0.6340708517396523,0.59,0.59,1999.0
+0.5675,0.5704220235982645,0.5675,0.5608532978176314,vif,21.0,21.0,grid search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=30, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",iqr,387.0,0.6017425982025104,0.5675,0.5675,1999.0
+0.89,0.88871371048171,0.89,0.8889752173828631,vif,21.0,21.0,nothing,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+                     metric_params=None, n_jobs=None, n_neighbors=5, p=2,
+                     weights='uniform')",iqr,387.0,0.8926203027305551,0.89,0.89,1999.0
+0.8975,0.8957247482656823,0.8975,0.896749505861028,vif,21.0,21.0,randomized search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=5, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=13, p=2,
+                     weights='uniform')",iqr,387.0,0.900539003696496,0.8975,0.8975,1999.0
+0.8975,0.8960135162278733,0.8975,0.8966447306432351,vif,21.0,21.0,grid search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=1, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=7, p=2,
+                     weights='uniform')",iqr,387.0,0.8999758014885366,0.8975,0.8975,1999.0
+0.7625,0.7582453196552034,0.7625,0.7603166528239202,vif,21.0,21.0,nothing,Logistic Regression,"LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+                   intercept_scaling=1, l1_ratio=None, max_iter=110,
+                   multi_class='auto', n_jobs=None, penalty='l1',
+                   random_state=None, solver='liblinear', tol=0.0001, verbose=0,
+                   warm_start=False)",iqr,387.0,0.776778897729602,0.7625,0.7625,1999.0
+0.6075,0.6058690789999202,0.6075,0.6023243669622174,vif,21.0,21.0,randomized search,Logistic Regression,"LogisticRegression(C=0.00016768329368110083, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=1,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l2',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",iqr,387.0,0.6122796613831816,0.6075,0.6075,1999.0
+0.605,0.6020837930163686,0.605,0.6011696349509829,vif,21.0,21.0,grid search,Logistic Regression,"LogisticRegression(C=6.55128556859551e-05, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=0,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l2',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",iqr,387.0,0.6069348935226264,0.605,0.605,1999.0
+0.5875,0.5634429862902353,0.5875,0.6054661884090682,vif,21.0,21.0,nothing,Neural Net,"MLPClassifier(activation='relu', alpha=1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=(100,), learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=None, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",iqr,387.0,0.5608271514742798,0.5875,0.5875,1999.0
+0.6875,0.6813620166835794,0.6875,0.6868879635719505,vif,21.0,21.0,randomized search,Neural Net,"MLPClassifier(activation='relu', alpha=0.1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=14, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1400, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=9, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",iqr,387.0,0.6876093351093351,0.6875,0.6875,1999.0
+0.645,0.6460782944494212,0.645,0.637501218032359,vif,21.0,21.0,grid search,Neural Net,"MLPClassifier(activation='relu', alpha=0.1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=10, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=3, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",iqr,387.0,0.674786043449638,0.645,0.645,1999.0
+0.3425,0.3429958688081608,0.3425,0.34152926938435896,vif,21.0,21.0,nothing,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=5, max_features=1, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=10,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",iqr,387.0,0.4083689616197356,0.3425,0.3425,1999.0
+0.84,0.8381578291477326,0.8399999999999999,0.8381829226524133,vif,21.0,21.0,randomized search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=40, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=40,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",iqr,387.0,0.8487735738357363,0.84,0.84,1999.0
+0.835,0.8343657956466638,0.835,0.8327397755303094,vif,21.0,21.0,grid search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=30, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=18,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",iqr,387.0,0.8431086688540818,0.835,0.835,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,vif,21.0,21.0,nothing,SVM Sigmoid,"SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,vif,21.0,21.0,randomized search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,vif,21.0,21.0,grid search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.9725,0.9725382424475166,0.9725,0.972385102211759,vif,21.0,21.0,nothing,SVM Linear,"SVC(C=0.025, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.9730939545629573,0.9725,0.9725,1999.0
+0.9725,0.9722084008173412,0.9725,0.9724087274377683,vif,21.0,21.0,randomized search,SVM Linear,"SVC(C=0.001, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=5, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.9730947104730706,0.9725,0.9725,1999.0
+0.9725,0.9722084008173412,0.9725,0.9724087274377683,vif,21.0,21.0,grid search,SVM Linear,"SVC(C=0.001, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.9730947104730706,0.9725,0.9725,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,vif,21.0,21.0,nothing,SVM RBF,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='rbf', max_iter=-1,
+    probability=False, random_state=None, shrinking=True, tol=0.001,
+    verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.2525,0.10079840319361277,0.2525,0.4031936127744511,vif,21.0,21.0,randomized search,SVM RBF,"SVC(C=0.01, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=573.6152510448682,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",iqr,387.0,0.063125,0.2525,0.2525,1999.0
+0.3575,0.2876163043887333,0.3575,0.4233827168425636,vif,21.0,21.0,grid search,SVM RBF,"SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=0.0001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",iqr,387.0,0.7915152015862525,0.3575,0.3575,1999.0
+0.5825,0.5258018996237022,0.5825,0.6288331708754589,vif,21.0,21.0,nothing,QDA,"QuadraticDiscriminantAnalysis(priors=None, reg_param=0.0,
+                              store_covariance=False, tol=0.0001)",iqr,387.0,0.5749309758946586,0.5825,0.5825,1999.0
+0.4275,0.4169493009271295,0.4275,0.4392230570746336,vif,21.0,21.0,nothing,Naive Bayes,"GaussianNB(priors=None, var_smoothing=1e-09)",iqr,387.0,0.6742235447275433,0.4275,0.4275,1999.0
+0.8725,0.8710618210639851,0.8725,0.8701930369801701,vif,21.0,21.0,nothing,Linear Discriminant Analysis,"LinearDiscriminantAnalysis(n_components=None, priors=None, shrinkage=None,
+                           solver='svd', store_covariance=False, tol=0.0001)",iqr,387.0,0.8906746031746031,0.8725,0.8725,1999.0
+0.5575,0.5335609448432821,0.5575,0.5858418849078435,cor,21.0,21.0,nothing,AdaBoost,"AdaBoostClassifier(algorithm='SAMME.R', base_estimator=None, learning_rate=1.0,
+                   n_estimators=50, random_state=None)",z_score,1600.0,0.7081894498014747,0.5575,0.5575,1999.0
+0.7325,0.7275577362681617,0.7325,0.7335638446095355,cor,21.0,21.0,randomized search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.3,
+                   n_estimators=90, random_state=None)",z_score,1600.0,0.7287476370561186,0.7325,0.7325,1999.0
+0.725,0.7176358620577576,0.7250000000000001,0.7278904063673152,cor,21.0,21.0,grid search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.3,
+                   n_estimators=64, random_state=None)",z_score,1600.0,0.7191019757057493,0.725,0.725,1999.0
+0.825,0.824393402592513,0.825,0.8222421665726387,cor,21.0,21.0,nothing,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=5,
+                       max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",z_score,1600.0,0.8355291378157832,0.825,0.825,1999.0
+0.685,0.6921764785327189,0.685,0.6798898553757132,cor,21.0,21.0,randomized search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=120,
+                       max_features='sqrt', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=30,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",z_score,1600.0,0.7023262155275356,0.685,0.685,1999.0
+0.425,0.42484601889698864,0.425,0.416888978883984,cor,21.0,21.0,grid search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=10,
+                       max_features='sqrt', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=50,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",z_score,1600.0,0.4420165871522794,0.425,0.425,1999.0
+0.5075,0.4981018682830849,0.5075,0.5096620566680365,cor,21.0,21.0,nothing,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=5, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",z_score,1600.0,0.5064888794074213,0.5075,0.5075,1999.0
+0.71,0.7040039535703273,0.7100000000000001,0.714395414849566,cor,21.0,21.0,randomized search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=55, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",z_score,1600.0,0.7031028512140567,0.71,0.71,1999.0
+0.7575,0.7504625687251132,0.7575,0.7615065928347249,cor,21.0,21.0,grid search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=38, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",z_score,1600.0,0.7501987685318029,0.7575,0.7575,1999.0
+0.9125,0.9107575760676834,0.9125,0.9118526061781987,cor,21.0,21.0,nothing,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+                     metric_params=None, n_jobs=None, n_neighbors=5, p=2,
+                     weights='uniform')",z_score,1600.0,0.9129405766011733,0.9125,0.9125,1999.0
+0.9175,0.9152787457913978,0.9175,0.9169720664372325,cor,21.0,21.0,randomized search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=5, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=7, p=2,
+                     weights='uniform')",z_score,1600.0,0.9177275323191942,0.9175,0.9175,1999.0
+0.9175,0.9152787457913978,0.9175,0.9169720664372325,cor,21.0,21.0,grid search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=1, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=7, p=2,
+                     weights='uniform')",z_score,1600.0,0.9177275323191942,0.9175,0.9175,1999.0
+0.86,0.8549165098367226,0.8599999999999999,0.8610037878787878,cor,21.0,21.0,nothing,Logistic Regression,"LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+                   intercept_scaling=1, l1_ratio=None, max_iter=110,
+                   multi_class='auto', n_jobs=None, penalty='l1',
+                   random_state=None, solver='liblinear', tol=0.0001, verbose=0,
+                   warm_start=False)",z_score,1600.0,0.8539320837326353,0.86,0.86,1999.0
+0.6375,0.6328206669460056,0.6375,0.634955778758187,cor,21.0,21.0,randomized search,Logistic Regression,"LogisticRegression(C=355.64803062231283, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=0,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l1',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",z_score,1600.0,0.6358486622073579,0.6375,0.6375,1999.0
+0.6375,0.6330922597079869,0.6375,0.6347004815619246,cor,21.0,21.0,grid search,Logistic Regression,"LogisticRegression(C=0.018420699693267165, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=0,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l2',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",z_score,1600.0,0.6364140690227647,0.6375,0.6375,1999.0
+0.7,0.6923331205999083,0.7,0.7038461588320934,cor,21.0,21.0,nothing,Neural Net,"MLPClassifier(activation='relu', alpha=1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=(100,), learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=None, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",z_score,1600.0,0.6919225449128623,0.7,0.7,1999.0
+0.675,0.6483210197578705,0.675,0.6935980049950854,cor,21.0,21.0,randomized search,Neural Net,"MLPClassifier(activation='relu', alpha=0.1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=11, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=2500, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=0, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",z_score,1600.0,0.6706076849395814,0.675,0.675,1999.0
+0.655,0.6145324938483506,0.655,0.6902929840317948,cor,21.0,21.0,grid search,Neural Net,"MLPClassifier(activation='relu', alpha=0.001, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=12, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=1, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",z_score,1600.0,0.6522594034602351,0.655,0.655,1999.0
+0.53,0.5378702164665454,0.53,0.5249521063353416,cor,21.0,21.0,nothing,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=5, max_features=1, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=10,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",z_score,1600.0,0.5475069160576407,0.53,0.53,1999.0
+0.89,0.8877935221436637,0.89,0.8891071819281187,cor,21.0,21.0,randomized search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=58, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=59,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",z_score,1600.0,0.8909644486511683,0.89,0.89,1999.0
+0.89,0.8882734851728866,0.89,0.8894209172485235,cor,21.0,21.0,grid search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=46, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=46,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",z_score,1600.0,0.8901409459104863,0.89,0.89,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,cor,21.0,21.0,nothing,SVM Sigmoid,"SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,cor,21.0,21.0,randomized search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,cor,21.0,21.0,grid search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.9725,0.9720107165214646,0.9725,0.972401826988509,cor,21.0,21.0,nothing,SVM Linear,"SVC(C=0.025, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.972327152014652,0.9725,0.9725,1999.0
+0.975,0.9746581857224144,0.975,0.9749132059396163,cor,21.0,21.0,randomized search,SVM Linear,"SVC(C=0.01, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=7, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.9748515310014165,0.975,0.975,1999.0
+0.975,0.9746581857224144,0.975,0.9749132059396163,cor,21.0,21.0,grid search,SVM Linear,"SVC(C=0.01, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.9748515310014165,0.975,0.975,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,cor,21.0,21.0,nothing,SVM RBF,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='rbf', max_iter=-1,
+    probability=False, random_state=None, shrinking=True, tol=0.001,
+    verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,cor,21.0,21.0,randomized search,SVM RBF,"SVC(C=0.001, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=0.014873521072935119,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.6875,0.7026321645574518,0.6875,0.6698578577924842,cor,21.0,21.0,grid search,SVM RBF,"SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=0.0001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.8000874336459622,0.6875,0.6875,1999.0
+0.925,0.9238127144677767,0.925,0.9246906291593368,cor,21.0,21.0,nothing,QDA,"QuadraticDiscriminantAnalysis(priors=None, reg_param=0.0,
+                              store_covariance=False, tol=0.0001)",z_score,1600.0,0.9245676787534587,0.925,0.925,1999.0
+0.8075,0.8062206680104607,0.8075,0.8047400253771323,cor,21.0,21.0,nothing,Naive Bayes,"GaussianNB(priors=None, var_smoothing=1e-09)",z_score,1600.0,0.8139458444868046,0.8075,0.8075,1999.0
+0.9175,0.9169470722382034,0.9175,0.9163540369052475,cor,21.0,21.0,nothing,Linear Discriminant Analysis,"LinearDiscriminantAnalysis(n_components=None, priors=None, shrinkage=None,
+                           solver='svd', store_covariance=False, tol=0.0001)",z_score,1600.0,0.9206481481481481,0.9175,0.9175,1999.0
+0.5575,0.5335609448432821,0.5575,0.5858418849078435,vif,21.0,21.0,nothing,AdaBoost,"AdaBoostClassifier(algorithm='SAMME.R', base_estimator=None, learning_rate=1.0,
+                   n_estimators=50, random_state=None)",z_score,1600.0,0.7081894498014747,0.5575,0.5575,1999.0
+0.73,0.7251564436937726,0.7299999999999999,0.7309313833350857,vif,21.0,21.0,randomized search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.3,
+                   n_estimators=130, random_state=None)",z_score,1600.0,0.7260640349749261,0.73,0.73,1999.0
+0.725,0.7176358620577576,0.7250000000000001,0.7278904063673152,vif,21.0,21.0,grid search,AdaBoost,"AdaBoostClassifier(algorithm='SAMME', base_estimator=None, learning_rate=0.3,
+                   n_estimators=64, random_state=None)",z_score,1600.0,0.7191019757057493,0.725,0.725,1999.0
+0.825,0.824393402592513,0.825,0.8222421665726387,vif,21.0,21.0,nothing,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=5,
+                       max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",z_score,1600.0,0.8355291378157832,0.825,0.825,1999.0
+0.5475,0.5510476331986354,0.5475,0.5412291264829908,vif,21.0,21.0,randomized search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=50,
+                       max_features='sqrt', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=170,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",z_score,1600.0,0.6206734571325712,0.5475,0.5475,1999.0
+0.6375,0.6387864884608965,0.6375,0.6293958530286421,vif,21.0,21.0,grid search,Decision Tree,"DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=6,
+                       max_features='log2', max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=10,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter='best')",z_score,1600.0,0.6529101657763003,0.6375,0.6375,1999.0
+0.4925,0.48510667622250403,0.4925,0.4950985997022989,vif,21.0,21.0,nothing,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=5, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",z_score,1600.0,0.49041289199358895,0.4925,0.4925,1999.0
+0.7675,0.7604639707843592,0.7675,0.7685335574741835,vif,21.0,21.0,randomized search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=66, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",z_score,1600.0,0.7594880119880121,0.7675,0.7675,1999.0
+0.74,0.734437547643378,0.74,0.7415930062720164,vif,21.0,21.0,grid search,Extra Trees,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='entropy',
+                     max_depth=None, max_features=2, max_leaf_nodes=None,
+                     min_impurity_decrease=0.0, min_impurity_split=None,
+                     min_samples_leaf=1, min_samples_split=2,
+                     min_weight_fraction_leaf=0.0, n_estimators=37, n_jobs=None,
+                     oob_score=False, random_state=None, verbose=0,
+                     warm_start=False)",z_score,1600.0,0.7345383053507528,0.74,0.74,1999.0
+0.9125,0.9107575760676834,0.9125,0.9118526061781987,vif,21.0,21.0,nothing,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+                     metric_params=None, n_jobs=None, n_neighbors=5, p=2,
+                     weights='uniform')",z_score,1600.0,0.9129405766011733,0.9125,0.9125,1999.0
+0.925,0.9224456903586931,0.925,0.9249297591967998,vif,21.0,21.0,randomized search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=3, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=9, p=2,
+                     weights='uniform')",z_score,1600.0,0.9236240471500546,0.925,0.925,1999.0
+0.9175,0.9152787457913978,0.9175,0.9169720664372325,vif,21.0,21.0,grid search,Nearest Neighbors,"KNeighborsClassifier(algorithm='auto', leaf_size=1, metric='minkowski',
+                     metric_params=None, n_jobs=-1, n_neighbors=7, p=2,
+                     weights='uniform')",z_score,1600.0,0.9177275323191942,0.9175,0.9175,1999.0
+0.86,0.8549165098367226,0.8599999999999999,0.8610037878787878,vif,21.0,21.0,nothing,Logistic Regression,"LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+                   intercept_scaling=1, l1_ratio=None, max_iter=110,
+                   multi_class='auto', n_jobs=None, penalty='l1',
+                   random_state=None, solver='liblinear', tol=0.0001, verbose=0,
+                   warm_start=False)",z_score,1600.0,0.8539320837326353,0.86,0.86,1999.0
+0.6375,0.6328206669460056,0.6375,0.634955778758187,vif,21.0,21.0,randomized search,Logistic Regression,"LogisticRegression(C=24420.53094548655, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=1,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l1',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",z_score,1600.0,0.6358486622073579,0.6375,0.6375,1999.0
+0.6375,0.6328206669460056,0.6375,0.634955778758187,vif,21.0,21.0,grid search,Logistic Regression,"LogisticRegression(C=8.286427728546842, class_weight=None, dual=False,
+                   fit_intercept=True, intercept_scaling=1, l1_ratio=0,
+                   max_iter=110, multi_class='auto', n_jobs=None, penalty='l2',
+                   random_state=None, solver='saga', tol=0.0001, verbose=0,
+                   warm_start=False)",z_score,1600.0,0.6358486622073579,0.6375,0.6375,1999.0
+0.6875,0.6764961125579303,0.6875,0.6934284101304613,vif,21.0,21.0,nothing,Neural Net,"MLPClassifier(activation='relu', alpha=1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=(100,), learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=None, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",z_score,1600.0,0.6907568176976575,0.6875,0.6875,1999.0
+0.6375,0.5671480222268155,0.6375,0.6973462691339989,vif,21.0,21.0,randomized search,Neural Net,"MLPClassifier(activation='relu', alpha=0.1, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=14, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=2500, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=6, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",z_score,1600.0,0.6198590757737099,0.6375,0.6375,1999.0
+0.655,0.6145324938483506,0.655,0.6902929840317948,vif,21.0,21.0,grid search,Neural Net,"MLPClassifier(activation='relu', alpha=0.001, batch_size='auto', beta_1=0.9,
+              beta_2=0.999, early_stopping=False, epsilon=1e-08,
+              hidden_layer_sizes=12, learning_rate='constant',
+              learning_rate_init=0.001, max_iter=1000, momentum=0.9,
+              n_iter_no_change=10, nesterovs_momentum=True, power_t=0.5,
+              random_state=1, shuffle=True, solver='adam', tol=0.0001,
+              validation_fraction=0.1, verbose=False, warm_start=False)",z_score,1600.0,0.6522594034602351,0.655,0.655,1999.0
+0.6925,0.6900074570260047,0.6925,0.6934357393133044,vif,21.0,21.0,nothing,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=5, max_features=1, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=10,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",z_score,1600.0,0.6923730301139024,0.6925,0.6925,1999.0
+0.89,0.8885529608006673,0.89,0.8885073498748958,vif,21.0,21.0,randomized search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=67, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=40,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",z_score,1600.0,0.8935091222317687,0.89,0.89,1999.0
+0.885,0.8833073939475582,0.885,0.8839013565239382,vif,21.0,21.0,grid search,Random Forest,"RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+                       max_depth=20, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, n_estimators=38,
+                       n_jobs=None, oob_score=False, random_state=None,
+                       verbose=0, warm_start=False)",z_score,1600.0,0.8864329200008145,0.885,0.885,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,vif,21.0,21.0,nothing,SVM Sigmoid,"SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,vif,21.0,21.0,randomized search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,vif,21.0,21.0,grid search,SVM Sigmoid,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=2, kernel='sigmoid',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.9725,0.9720107165214646,0.9725,0.972401826988509,vif,21.0,21.0,nothing,SVM Linear,"SVC(C=0.025, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.972327152014652,0.9725,0.9725,1999.0
+0.975,0.9746581857224144,0.975,0.9749132059396163,vif,21.0,21.0,randomized search,SVM Linear,"SVC(C=0.01, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.9748515310014165,0.975,0.975,1999.0
+0.975,0.9746581857224144,0.975,0.9749132059396163,vif,21.0,21.0,grid search,SVM Linear,"SVC(C=0.01, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma='auto_deprecated',
+    kernel='linear', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.9748515310014165,0.975,0.975,1999.0
+0.235,0.09514170040485831,0.235,0.38056680161943324,vif,21.0,21.0,nothing,SVM RBF,"SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=2, kernel='rbf', max_iter=-1,
+    probability=False, random_state=None, shrinking=True, tol=0.001,
+    verbose=False)",z_score,1600.0,0.05875,0.235,0.235,1999.0
+0.4575,0.4541484119950488,0.4575,0.46594332742334127,vif,21.0,21.0,randomized search,SVM RBF,"SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=2, gamma=0.00017433288221999874,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)",z_score,1600.0,0.7773484848484848,0.4575,0.4575,1999.0
+0.6875,0.7026321645574518,0.6875,0.6698578577924842,vif,21.0,21.0,grid search,SVM RBF,"SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=1, gamma=0.0001, kernel='rbf',
+    max_iter=-1, probability=False, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)",z_score,1600.0,0.8000874336459622,0.6875,0.6875,1999.0
+0.925,0.9238127144677767,0.925,0.9246906291593368,vif,21.0,21.0,nothing,QDA,"QuadraticDiscriminantAnalysis(priors=None, reg_param=0.0,
+                              store_covariance=False, tol=0.0001)",z_score,1600.0,0.9245676787534587,0.925,0.925,1999.0
+0.8075,0.8062206680104607,0.8075,0.8047400253771323,vif,21.0,21.0,nothing,Naive Bayes,"GaussianNB(priors=None, var_smoothing=1e-09)",z_score,1600.0,0.8139458444868046,0.8075,0.8075,1999.0
+0.9175,0.9169470722382034,0.9175,0.9163540369052475,vif,21.0,21.0,nothing,Linear Discriminant Analysis,"LinearDiscriminantAnalysis(n_components=None, priors=None, shrinkage=None,
+                           solver='svd', store_covariance=False, tol=0.0001)",z_score,1600.0,0.9206481481481481,0.9175,0.9175,1999.0
