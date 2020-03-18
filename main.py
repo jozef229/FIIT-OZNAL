@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+
 from scipy import stats
 from sklearn import datasets, metrics
 from sklearn.decomposition import PCA
@@ -21,6 +22,8 @@ from sklearn.gaussian_process.kernels import (RBF, ConstantKernel, DotProduct,
                                               ExpSineSquared, Matern,
                                               RationalQuadratic)
 from sklearn.linear_model import LogisticRegression
+
+
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix, f1_score, fbeta_score,
                              recall_score)
@@ -81,27 +84,33 @@ def printBoxPlot(x_value, y_value, df):
     plt.xlabel(x_value)
     plt.ylabel(y_value)
     plt.title(x_value + ' and ' + y_value)
-    sns.barplot(x=x_value, y=y_value, data=df)
+    sns_barplot = sns.barplot(x=x_value, y=y_value, data=df)
+    fig = sns_barplot.get_figure()
+    fig.savefig('Information/boxplot2/' + x_value + ' and ' + y_value + '.png')
     pass
 
 
 def printBoxPlot2(x, y, df):
-    sns.boxplot(data=df, x=x, y=y, notch=True)
+    sns_boxPlot = sns.boxplot(data=df, x=x, y=y, notch=True)
+    fig = sns_boxPlot.get_figure()
+    fig.savefig('Information/boxplot/' + x + ' and ' + y + '.png')
 
 
 def printHistogram(df):
     fig = plt.figure(figsize=(15, 20))
     ax = fig.gca()
     hist = df.hist(ax=ax)
-    plt.savefig('dataset/histograms.png')
+    plt.savefig('Information/histograms.png')
+    plt.show(block=False)
+    plt.close('all')
 
 
 def printCorrHeatMap(df):
     f, ax = plt.subplots(figsize=(18, 18))
     sns.heatmap(df.corr(), annot=True, linewidths=.5, fmt='.1f', ax=ax)
-    plt.show()
-    plt.title("Correlation map")
-    plt.savefig('dataset/corrHeatMap.png')
+    plt.savefig('Information/corrHeatMap.png')
+    plt.show(block=False)
+    plt.close('all')
     pass
 
 
@@ -111,7 +120,9 @@ def printCorrHeatMapOneValue(df, value):
     sns.heatmap(df.corr()[[value]].sort_values(value).tail(10),
                 vmax=1, vmin=-1, annot=True, ax=ax)
     ax.invert_yaxis()
-    plt.savefig('dataset/corrHeatMapPrice.png')
+    plt.savefig('Information/corrHeatMapPrice.png')
+    plt.show(block=False)
+    plt.close('all')
 
 
 def printScarrlet(x_value, y_value, df):
@@ -120,12 +131,79 @@ def printScarrlet(x_value, y_value, df):
     plt.xlabel(x_value)
     plt.ylabel(y_value)
     plt.title(x_value + ' and ' + y_value)
+    plt.savefig('Information/scarrlet/' + x_value + ' and ' + y_value + '.png')
+    plt.show(block=False)
+    plt.close('all')
 
 
 def printAllScarrlet(df):
     axs = pd.plotting.scatter_matrix(df[['battery_power', 'clock_speed', 'fc', 'int_memory', 'mobile_wt',
                                          'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'price_range']], figsize=(15, 15))
-    plt.savefig('dataset/scarrletAll.png')
+    plt.savefig('Information/scarrletAll.png')
+    plt.close('all')
+
+
+def iqr_dependence(df):
+    bottom_quantile = 0.25
+    top_quantile = 0.75
+    Q1 = df.quantile(bottom_quantile)
+    Q3 = df.quantile(top_quantile)
+    IQR = Q3 - Q1
+    print(IQR)
+    help = (df < (Q1 - 1.5 * IQR)
+            ) | (df > (Q3 + 1.5 * IQR))
+    print(help.head())
+    print()
+    print(help.describe())
+    print()
+
+    iqr_data = help.describe()
+
+    cm = sns.light_palette("green", as_cmap=True)
+    styled = iqr_data.style.background_gradient(cmap=cm)
+    styled.to_excel('Information/iqr_data.xlsx', engine='openpyxl')
+
+    plt.boxplot(train_mobile.three_g)
+    plt.savefig('Information/boxPlot_three_g.png')
+    plt.close('all')
+
+    plt.boxplot(train_mobile.fc)
+    plt.savefig('Information/boxPlot_fc.png')
+    plt.close('all')
+
+    plt.boxplot(train_mobile.px_height)
+    plt.savefig('Information/boxPlot_px_height.png')
+    plt.close('all')
+
+
+def z_score_dependence(df):
+    train_mobile_z_score = df.copy()
+    help = np.abs(stats.zscore(
+        (train_mobile_z_score.select_dtypes(exclude="object"))) < 3).all(axis=1)
+
+    np.count_nonzero(help == True)
+
+    for col in train_mobile_z_score.columns:
+        sns.distplot(train_mobile_z_score[col], color="maroon")
+        plt.xlabel(col, labelpad=14)
+        plt.ylabel("probability of occurence", labelpad=14)
+        plt.title("Distribution of " + col, y=1.015, fontsize=20)
+        plt.savefig('Information/z_score/' + "Distribution of " + col + '.png')
+        plt.show(block=False)
+        plt.close('all')
+
+        train_mobile_z_score['us_z-score'] = (train_mobile_z_score[col] -
+                                              train_mobile_z_score[col].mean())/train_mobile_z_score[col].std()
+
+        train_mobile_z_score['us_z-score'].hist(color='slategray')
+        plt.title("Standard Normal Distribution of " +
+                  col, y=1.015, fontsize=22)
+        plt.xlabel("z-score", labelpad=14)
+        plt.ylabel("frequency", labelpad=14)
+        plt.savefig('Information/z_score/' +
+                    "Standard Normal Distribution of " + col + '.png')
+        plt.show(block=False)
+        plt.close('all')
 
 
 def printInfoData(name_dataset, df, df_with_col, primary_col):
@@ -140,6 +218,8 @@ def printInfoData(name_dataset, df, df_with_col, primary_col):
     printCorrHeatMap(df)
     printCorrHeatMapOneValue(df, primary_col)
     printAllScarrlet(df)
+    z_score_dependence(df)
+    iqr_dependence(df)
     df_stats = pd.DataFrame()
     df_type = pd.DataFrame()
     for col in df.columns:
@@ -150,8 +230,9 @@ def printInfoData(name_dataset, df, df_with_col, primary_col):
         if col != "quality":
             printBoxPlot("price_range", col, df)
             printBoxPlot2("price_range", col, df)
-    df_stats.to_csv(r'Dataset/columns_stats.csv', index=False, header=True)
-    df_type.to_csv(r'Dataset/columns_type.csv', index=False, header=True)
+    print("last")
+    df_stats.to_csv(r'Information/columns_stats.csv', index=False, header=True)
+    df_type.to_csv(r'Information/columns_type.csv', index=False, header=True)
 
 
 # %%
@@ -160,8 +241,17 @@ train_mobile = pd.read_csv('dataset/mobile/train.csv')
 
 # Print and save all information about train_model
 # https://www.kaggle.com/iabhishekofficial/mobile-price-classification#train.csv
-# printInfoData("Mobile", train_mobile, mobile.price_range, "price_range")
+printInfoData("Mobile", train_mobile, train_mobile.price_range, "price_range")
 
+
+# %%
+
+corr_data_price = train_mobile[train_mobile.columns[1:]].corr()[
+    'price_range'][:]
+
+cm = sns.light_palette("green", as_cmap=True)
+styled = corr_data_price.to_frame().style.background_gradient(cmap=cm)
+styled.to_excel('Information/corr_data_price.xlsx', engine='openpyxl')
 
 # %%
 # help print
@@ -201,9 +291,8 @@ def iqr_outliers(dataset, bottom_quantile=0.25, top_quantile=0.75):
     Q1 = dataset.quantile(bottom_quantile)
     Q3 = dataset.quantile(top_quantile)
     IQR = Q3 - Q1
-    dataset_out = dataset[
-        ((dataset < (Q1 - 1.5 * IQR)) | (dataset > (Q3 + 1.5 * IQR))).any(axis=1)
-    ]
+    dataset_out = dataset[~((dataset < (Q1 - 1.5 * IQR))
+                            | (dataset > (Q3 + 1.5 * IQR))).any(axis=1)]
     return dataset_out
 
 
@@ -254,27 +343,20 @@ def selectKBest(dataset, X_data, y_data):
 
 classifiersParams = {
     "AdaBoost": {
-        'n_estimators': range(60, 90),
+        'n_estimators': range(40, 80, 6),
         'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
         'algorithm': ['SAMME', 'SAMME.R'],
     },
     "Decision Tree": {
-        'min_samples_split': range(10, 400, 20),
+        'min_samples_split': range(10, 400, 25),
         'max_features': ['sqrt', 'log2'],
         'max_depth': [4, 5, 6, 7, 9, 10, 11, 12, 15, 30, 40, 70, 120, 150],
         'criterion': ['gini', 'entropy'],
     },
     "Extra Trees": {
-        "n_estimators": range(15, 40),
+        "n_estimators": range(10, 50, 4),
         "criterion": ("gini", "entropy"),
     },
-    # "Gaussian Process": {
-    #     "kernel": [DotProduct(i) for i in [0.5, 1, 5]] + [Matern(i) for i in [0.5, 1, 5]] + [RBF(i) for i in [0.5, 1, 5]],
-    #     "optimizer": ["fmin_l_bfgs_b"],
-    #     "n_restarts_optimizer": [1, 3],
-    #     "copy_X_train": [True],
-    #     "random_state": [0],
-    # },
     "Nearest Neighbors": {
         "n_neighbors": range(5, 9),
         "leaf_size": [1, 3, 5],
@@ -283,61 +365,54 @@ classifiersParams = {
     },
     "Logistic Regression": {
         "penalty": ["l1", "l2", "elasticnet"],
-        "C": np.logspace(-5, 5),
+        "C": np.logspace(-5, 5, 15),
         "solver": ['saga'],
         "l1_ratio": [0, 1],
     },
     "Neural Net": {
         "solver": ["lbfgs", "sgd", "adam"],
-        "max_iter": [1000, 1400, 1800, 2000],
+        "max_iter": [1000, 1800],
         "alpha": 10.0 ** -np.arange(1, 4),
         "hidden_layer_sizes": np.arange(10, 13),
-        "random_state": [0, 1, 3, 6, 9],
+        "random_state": [0, 1, 3, 6],
     },
     "Random Forest": {
-        "max_depth": [20, 24, 28, 30, 38, 42, 46, 48, 56, 60, 64],
-        "n_estimators": [10, 14, 18, 20, 24, 28, 36, 38, 42, 46, 50, 54],
-        "max_features": ["sqrt", "log2", None],
+        "max_depth": range(20, 60, 6),
+        "n_estimators": range(20, 60, 6),
+        "max_features": ["sqrt", "log2"],
     },
-    "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
+    "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 4), "C": [1, 10]},
     "SVM Linear": {
         "kernel": ["linear"],
-        "degree": range(1, 5),
+        "degree": range(1, 4),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
     "SVM RBF": {
         "kernel": ["rbf"],
-        "degree": range(1, 5),
-        "gamma": np.logspace(-4, 3, 30),
+        "degree": range(1, 4),
+        "gamma": np.logspace(-4, 3, 10),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
 }
 
 classifiersParamsRandomSearch = {
     "AdaBoost": {
-        'n_estimators': range(50, 150),
+        'n_estimators': range(50, 200),
         'learning_rate': [0.01, 0.05, 0.1, 0.3, 1],
         'algorithm': ['SAMME', 'SAMME.R'],
     },
     "Decision Tree": {
-        'min_samples_split': range(10, 500, 20),
+        'min_samples_split': range(10, 500, 15),
         'max_features': ['sqrt', 'log2'],
         'max_depth': [4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 30, 40, 50, 70, 90, 120, 150],
         'criterion': ['gini', 'entropy'],
     },
     "Extra Trees": {
-        "n_estimators": range(10, 70),
+        "n_estimators": range(10, 80),
         "criterion": ("gini", "entropy"),
     },
-    # "Gaussian Process": {
-    #     "kernel": [DotProduct(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [Matern(i) for i in [0.2, 0.5, 1, 2, 3, 5]] + [RBF(i) for i in [0.2, 0.5, 1, 2, 3, 5]],
-    #     "optimizer": ["fmin_l_bfgs_b"],
-    #     "n_restarts_optimizer": [1, 2, 3, 4, 5],
-    #     "copy_X_train": [True],
-    #     "random_state": [0],
-    # },
     "Nearest Neighbors": {
-        "n_neighbors": range(3, 15),
+        "n_neighbors": range(3, 20),
         "leaf_size": [1, 3, 5, 7],
         "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
         "n_jobs": [-1],
@@ -350,25 +425,25 @@ classifiersParamsRandomSearch = {
     },
     "Neural Net": {
         "solver": ["lbfgs", "sgd", "adam"],
-        "max_iter": [1000, 1400, 1800, 2000, 2500],
-        "alpha": 10.0 ** -np.arange(1, 4),
-        "hidden_layer_sizes": np.arange(10, 15),
+        "max_iter": [1000, 1400, 1800, 2000, 2500, 3000],
+        "alpha": 10.0 ** -np.arange(1, 5),
+        "hidden_layer_sizes": np.arange(10, 14),
         "random_state": [0, 1, 3, 6, 9],
     },
     "Random Forest": {
-        "max_depth": range(20, 80),
-        "n_estimators": range(10, 80),
+        "max_depth": range(20, 70),
+        "n_estimators": range(10, 70),
         "max_features": ["sqrt", "log2", None],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
     "SVM Linear": {
         "kernel": ["linear"],
-        "degree": range(1, 8),
+        "degree": range(1, 4),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
     "SVM RBF": {
         "kernel": ["rbf"],
-        "degree": range(1, 8),
+        "degree": range(1, 6),
         "gamma": np.logspace(-4, 3, 30),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
@@ -379,7 +454,6 @@ classifiersNames = [
     "AdaBoost",
     "Decision Tree",
     "Extra Trees",
-    # "Gaussian Process",
     "Nearest Neighbors",
     "Logistic Regression",
     "Neural Net",
@@ -390,13 +464,14 @@ classifiersNames = [
     "QDA",
     "Naive Bayes",
     "Linear Discriminant Analysis",
+    "Gaussian Process",
 ]
 
 classifiers = [
     AdaBoostClassifier(),
     DecisionTreeClassifier(max_depth=5),
     ExtraTreesClassifier(n_estimators=5, criterion="entropy", max_features=2),
-    # GaussianProcessClassifier(1.0 * RBF(1.0)),
+
     KNeighborsClassifier(),
     LogisticRegression(
         penalty="l1", dual=False, max_iter=110, solver="liblinear", multi_class="auto"
@@ -409,6 +484,7 @@ classifiers = [
     QuadraticDiscriminantAnalysis(),
     GaussianNB(),
     LinearDiscriminantAnalysis(),
+    GaussianProcessClassifier(1.0 * RBF(1.0)),
 ]
 
 
@@ -449,7 +525,7 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
         "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
 
 
-def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
+def classificationModel(validation, typeModel, X, y, heNumber, iteration=20):
     if heNumber == 0:
         model = classifiers[typeModel]
     if heNumber == 1:
@@ -473,31 +549,6 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=10):
 
 
 # %%
-# dataset_without_add_column = train_mobile.copy()
-# dataset_with_add_column = train_mobile.copy()
-
-# addCol(dataset_with_add_column, "battery_power")
-# addCol(dataset_with_add_column, "clock_speed")
-# addCol(dataset_with_add_column, "int_memory")
-# addCol(dataset_with_add_column, "m_dep")
-# addCol(dataset_with_add_column, "mobile_wt")
-# addCol(dataset_with_add_column, "n_cores")
-# addCol(dataset_with_add_column, "px_height")
-# addCol(dataset_with_add_column, "px_width")
-# addCol(dataset_with_add_column, "pc")
-# addCol(dataset_with_add_column, "ram")
-# addCol(dataset_with_add_column, "sc_h")
-# addCol(dataset_with_add_column, "sc_w")
-# addCol(dataset_with_add_column, "talk_time")
-
-# # help print
-# print(dataset_with_add_column.head())
-
-# train_mobile = dataset_with_add_column.copy()
-
-
-# %%
-
 train_mobile = pd.read_csv('dataset/mobile/train.csv')
 main_value = 'price_range'
 
@@ -542,10 +593,8 @@ for outlier in range(len(outliersName)):
             X_test = test[list(
                 filter(lambda x: x != main_value, other_value))]
             for modelNumber in range(len(classifiers)):
-                # modelNumber += 10
                 for hypEstimation in range(len(hyperparameterEstimation)):
                     start_time = time.time()
-                    print(start_time)
 
                     if modelNumber >= len(classifiersParams) and hypEstimation > 0:
                         print("Without grid/random search")
@@ -569,13 +618,13 @@ for outlier in range(len(outliersName)):
                                   "z" + str(len(classifiers)) + " HE ", hypEstimation, "error ", errT)
 
                             elapsed_time = time.time() - start_time
-                            print("time: ", elapsed_time)
+                            print("all time: ", elapsed_time)
                             print("")
 
 
 print("last")
 
-df_stats_model.to_csv(r'Dataset/columns_stats_model.csv',
+df_stats_model.to_csv(r'Information/columns_stats_model.csv',
                       index=False, header=True)
 
 
@@ -585,9 +634,33 @@ cm = sns.light_palette("green", as_cmap=True)
 
 styled = df_stats_model.style.background_gradient(cmap=cm)
 
-styled.to_excel('Dataset/styled_model.xlsx', engine='openpyxl')
+styled.to_excel('Information/styled_model.xlsx', engine='openpyxl')
 
 # %%
+
+# %%
+# train_mobile = pd.read_csv('dataset/mobile/train.csv')
+# dataset_without_add_column = train_mobile.copy()
+# dataset_with_add_column = train_mobile.copy()
+
+# addCol(dataset_with_add_column, "battery_power")
+# addCol(dataset_with_add_column, "clock_speed")
+# addCol(dataset_with_add_column, "int_memory")
+# addCol(dataset_with_add_column, "m_dep")
+# addCol(dataset_with_add_column, "mobile_wt")
+# addCol(dataset_with_add_column, "n_cores")
+# addCol(dataset_with_add_column, "px_height")
+# addCol(dataset_with_add_column, "px_width")
+# addCol(dataset_with_add_column, "pc")
+# addCol(dataset_with_add_column, "ram")
+# addCol(dataset_with_add_column, "sc_h")
+# addCol(dataset_with_add_column, "sc_w")
+# addCol(dataset_with_add_column, "talk_time")
+
+# # help print
+# print(dataset_with_add_column.head())
+
+# train_mobile = dataset_with_add_column.copy()
 
 # %%
 
