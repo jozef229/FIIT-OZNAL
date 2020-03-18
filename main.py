@@ -541,37 +541,39 @@ def classificationModel(validation, typeModel, X, y, heNumber, iteration=20):
         except KeyError:
             validation = False
     model.fit(X, y)
-
+    print("end hp")
     if heNumber == 0:
         return model
     else:
         return model.best_estimator_
 
 
+def addMultiCol(df):
+    addCol(df, "battery_power")
+    addCol(df, "clock_speed")
+    addCol(df, "int_memory")
+    addCol(df, "m_dep")
+    addCol(df, "mobile_wt")
+    addCol(df, "n_cores")
+    addCol(df, "px_height")
+    addCol(df, "px_width")
+    addCol(df, "pc")
+    addCol(df, "ram")
+    addCol(df, "sc_h")
+    addCol(df, "sc_w")
+    addCol(df, "talk_time")
+
+
 # %%
 train_mobile = pd.read_csv('dataset/mobile/train.csv')
 main_value = 'price_range'
-
-
-addCol(train_mobile, "battery_power")
-addCol(train_mobile, "clock_speed")
-addCol(train_mobile, "int_memory")
-addCol(train_mobile, "m_dep")
-addCol(train_mobile, "mobile_wt")
-addCol(train_mobile, "n_cores")
-addCol(train_mobile, "px_height")
-addCol(train_mobile, "px_width")
-addCol(train_mobile, "pc")
-addCol(train_mobile, "ram")
-addCol(train_mobile, "sc_h")
-addCol(train_mobile, "sc_w")
-addCol(train_mobile, "talk_time")
 
 train, test = train_test_split(train_mobile, test_size=0.2)
 y_test = test[main_value]
 df_stats_model = pd.DataFrame()
 initialProduct = train_mobile.shape[0] - 1
 initialFeature = train_mobile.shape[1]
+addMultiCol(test)
 
 for outlier in range(len(outliersName)):
     df_mobile_out = train.copy()
@@ -580,6 +582,10 @@ for outlier in range(len(outliersName)):
     if outlier == 1:
         z_score_outliers(df_mobile_out)
     if df_mobile_out.shape[0] != 0:
+        addMultiCol(df_mobile_out)
+        print(df_mobile_out.head())
+        print(df_mobile_out.columns.tolist())
+
         for selectFeature in range(len(featureSelectionName)):
             df_mobile = df_mobile_out.copy()
             if selectFeature == 0:
@@ -595,7 +601,11 @@ for outlier in range(len(outliersName)):
             for modelNumber in range(len(classifiers)):
                 for hypEstimation in range(len(hyperparameterEstimation)):
                     start_time = time.time()
-
+                    t = time.localtime()
+                    current_time = time.strftime("%H:%M:%S", t)
+                    print("start-", current_time)
+                    print(str(df_mobile.shape[0]) +
+                          "and" + str(df_mobile.shape[1]))
                     if modelNumber >= len(classifiersParams) and hypEstimation > 0:
                         print("Without grid/random search")
                     else:
@@ -606,7 +616,9 @@ for outlier in range(len(outliersName)):
                                 model = classificationModel(
                                     validation, modelNumber, X_train, y_train, hypEstimation)
                                 if validation == True:
+                                    print("start-Predict")
                                     X_test_predict = model.predict(X_test)
+                                    print("end-Predict")
                                     df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
                                                                      modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
                             except ValueError:
@@ -615,9 +627,12 @@ for outlier in range(len(outliersName)):
                             print("OT ", str(outlier) + " z " +
                                   str(len(outliersName)) + " SF ", str(selectFeature) + "z" +
                                   str(len(featureSelectionName)) + " MO ", str(modelNumber) +
-                                  "z" + str(len(classifiers)) + " HE ", hypEstimation, "error ", errT)
+                                  "z" + str(len(classifiers)) + " HE ", hypEstimation, "error ", errT, " validation ", validation)
 
                             elapsed_time = time.time() - start_time
+                            t = time.localtime()
+                            current_time = time.strftime("%H:%M:%S", t)
+                            print("end -", current_time)
                             print("all time: ", elapsed_time)
                             print("")
 
@@ -635,33 +650,5 @@ cm = sns.light_palette("green", as_cmap=True)
 styled = df_stats_model.style.background_gradient(cmap=cm)
 
 styled.to_excel('Information/styled_model.xlsx', engine='openpyxl')
-
-# %%
-
-# %%
-# train_mobile = pd.read_csv('dataset/mobile/train.csv')
-# dataset_without_add_column = train_mobile.copy()
-# dataset_with_add_column = train_mobile.copy()
-
-# addCol(dataset_with_add_column, "battery_power")
-# addCol(dataset_with_add_column, "clock_speed")
-# addCol(dataset_with_add_column, "int_memory")
-# addCol(dataset_with_add_column, "m_dep")
-# addCol(dataset_with_add_column, "mobile_wt")
-# addCol(dataset_with_add_column, "n_cores")
-# addCol(dataset_with_add_column, "px_height")
-# addCol(dataset_with_add_column, "px_width")
-# addCol(dataset_with_add_column, "pc")
-# addCol(dataset_with_add_column, "ram")
-# addCol(dataset_with_add_column, "sc_h")
-# addCol(dataset_with_add_column, "sc_w")
-# addCol(dataset_with_add_column, "talk_time")
-
-# # help print
-# print(dataset_with_add_column.head())
-
-# train_mobile = dataset_with_add_column.copy()
-
-# %%
 
 # %%
