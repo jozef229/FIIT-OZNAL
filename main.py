@@ -382,11 +382,11 @@ classifiersParams = {
         "max_features": ["sqrt", "log2"],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 4), "C": [1, 10]},
-    "SVM Linear": {
-        "kernel": ["linear"],
-        "degree": range(1, 4),
-        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-    },
+    # "SVM Linear": {
+    #     "kernel": ["linear"],
+    #     "degree": range(1, 4),
+    #     "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    # },
     "SVM RBF": {
         "kernel": ["rbf"],
         "degree": range(1, 4),
@@ -436,11 +436,11 @@ classifiersParamsRandomSearch = {
         "max_features": ["sqrt", "log2", None],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
-    "SVM Linear": {
-        "kernel": ["linear"],
-        "degree": range(1, 4),
-        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-    },
+    # "SVM Linear": {
+    #     "kernel": ["linear"],
+    #     "degree": range(1, 4),
+    #     "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    # },
     "SVM RBF": {
         "kernel": ["rbf"],
         "degree": range(1, 6),
@@ -459,12 +459,12 @@ classifiersNames = [
     "Neural Net",
     "Random Forest",
     "SVM Sigmoid",
-    "SVM Linear",
     "SVM RBF",
     "QDA",
     "Naive Bayes",
     "Linear Discriminant Analysis",
     "Gaussian Process",
+    "SVM Linear",
 ]
 
 classifiers = [
@@ -487,6 +487,10 @@ classifiers = [
     GaussianProcessClassifier(1.0 * RBF(1.0)),
 ]
 
+isColumnAdd = [
+    "yes",
+    "no",
+]
 
 outliersName = [
     "iqr",
@@ -505,8 +509,9 @@ hyperparameterEstimation = [
 ]
 
 
-def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelection, model, nameIndex, train, test, df_actual, hypEstimation):
+def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelection, model, nameIndex, train, test, df_actual, hypEstimation, isAddedColumn):
     return df_print.append({
+        "Added column": isColumnAdd[isAddedColumn],
         "Model Params": model,
         "Records": records,
         "Hyperparameter estimation": hyperparameterEstimation[hypEstimation],
@@ -565,76 +570,80 @@ def addMultiCol(df):
 
 
 # %%
-train_mobile = pd.read_csv('dataset/mobile/train.csv')
-main_value = 'price_range'
 
-train, test = train_test_split(train_mobile, test_size=0.2)
-y_test = test[main_value]
 df_stats_model = pd.DataFrame()
-initialProduct = train_mobile.shape[0] - 1
-initialFeature = train_mobile.shape[1]
-addMultiCol(test)
+for isAddedColumn in range(len(isColumnAdd)):
+    train_mobile = pd.read_csv('dataset/mobile/train.csv')
+    main_value = 'price_range'
 
-for outlier in range(len(outliersName)):
-    df_mobile_out = train.copy()
-    if outlier == 0:
-        df_mobile_out = iqr_outliers(df_mobile_out)
-    if outlier == 1:
-        z_score_outliers(df_mobile_out)
-    if df_mobile_out.shape[0] != 0:
-        addMultiCol(df_mobile_out)
-        print(df_mobile_out.head())
-        print(df_mobile_out.columns.tolist())
+    train, test = train_test_split(train_mobile, test_size=0.2)
+    y_test = test[main_value]
+    initialProduct = train_mobile.shape[0] - 1
+    initialFeature = train_mobile.shape[1]
+    if isAddedColumn == 0:
+        addMultiCol(test)
 
-        for selectFeature in range(len(featureSelectionName)):
-            df_mobile = df_mobile_out.copy()
-            if selectFeature == 0:
-                df_mobile = CorrelationMatrixSelectFeatures(df_mobile)
-            if selectFeature == 1:
-                df_mobile = vifSelectFeatures(df_mobile)
-            other_value = df_mobile.columns.tolist()
-            y_train = df_mobile[main_value]
-            X_train = df_mobile[list(
-                filter(lambda x: x != main_value, other_value))]
-            X_test = test[list(
-                filter(lambda x: x != main_value, other_value))]
-            for modelNumber in range(len(classifiers)):
-                for hypEstimation in range(len(hyperparameterEstimation)):
-                    start_time = time.time()
-                    t = time.localtime()
-                    current_time = time.strftime("%H:%M:%S", t)
-                    print("start-", current_time)
-                    print(str(df_mobile.shape[0]) +
-                          "and" + str(df_mobile.shape[1]))
-                    if modelNumber >= len(classifiersParams) and hypEstimation > 0:
-                        print("Without grid/random search")
-                    else:
-                        if df_mobile.shape[1] != 0:
-                            errT = "no"
-                            try:
-                                validation = True
-                                model = classificationModel(
-                                    validation, modelNumber, X_train, y_train, hypEstimation)
-                                if validation == True:
-                                    print("start-Predict")
-                                    X_test_predict = model.predict(X_test)
-                                    print("end-Predict")
-                                    df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
-                                                                     modelNumber, X_test_predict, y_test, df_mobile, hypEstimation)
-                            except ValueError:
-                                print("This is an error message!")
-                                errT = "jj"
-                            print("OT ", str(outlier) + " z " +
-                                  str(len(outliersName)) + " SF ", str(selectFeature) + "z" +
-                                  str(len(featureSelectionName)) + " MO ", str(modelNumber) +
-                                  "z" + str(len(classifiers)) + " HE ", hypEstimation, "error ", errT, " validation ", validation)
+    for outlier in range(len(outliersName)):
+        df_mobile_out = train.copy()
+        if outlier == 0:
+            df_mobile_out = iqr_outliers(df_mobile_out)
+        if outlier == 1:
+            z_score_outliers(df_mobile_out)
+        if df_mobile_out.shape[0] != 0:
+            if isAddedColumn == 0:
+                addMultiCol(df_mobile_out)
+            print(df_mobile_out.head())
+            print(df_mobile_out.columns.tolist())
 
-                            elapsed_time = time.time() - start_time
-                            t = time.localtime()
-                            current_time = time.strftime("%H:%M:%S", t)
-                            print("end -", current_time)
-                            print("all time: ", elapsed_time)
-                            print("")
+            for selectFeature in range(len(featureSelectionName)):
+                df_mobile = df_mobile_out.copy()
+                if selectFeature == 0:
+                    df_mobile = CorrelationMatrixSelectFeatures(df_mobile)
+                if selectFeature == 1:
+                    df_mobile = vifSelectFeatures(df_mobile)
+                other_value = df_mobile.columns.tolist()
+                y_train = df_mobile[main_value]
+                X_train = df_mobile[list(
+                    filter(lambda x: x != main_value, other_value))]
+                X_test = test[list(
+                    filter(lambda x: x != main_value, other_value))]
+                for modelNumber in range(len(classifiers)):
+                    for hypEstimation in range(len(hyperparameterEstimation)):
+                        start_time = time.time()
+                        t = time.localtime()
+                        current_time = time.strftime("%H:%M:%S", t)
+                        print("start-", current_time)
+                        print(str(df_mobile.shape[0]) +
+                              "and" + str(df_mobile.shape[1]))
+                        if modelNumber >= len(classifiersParams) and hypEstimation > 0:
+                            print("Without grid/random search")
+                        else:
+                            if df_mobile.shape[1] != 0:
+                                errT = "no"
+                                try:
+                                    validation = True
+                                    model = classificationModel(
+                                        validation, modelNumber, X_train, y_train, hypEstimation)
+                                    if validation == True:
+                                        print("start-Predict")
+                                        X_test_predict = model.predict(X_test)
+                                        print("end-Predict")
+                                        df_stats_model = printFinalTable(df_stats_model, initialProduct, initialFeature, outlier, selectFeature, model,
+                                                                         modelNumber, X_test_predict, y_test, df_mobile, hypEstimation, isAddedColumn)
+                                except ValueError:
+                                    print("This is an error message!")
+                                    errT = "jj"
+                                print("AD ", str(isAddedColumn), " z ", len(isColumnAdd), "OT ", str(outlier) + " z " +
+                                      str(len(outliersName)) + " SF ", str(selectFeature) + "z" +
+                                      str(len(featureSelectionName)) + " MO ", str(modelNumber) +
+                                      "z" + str(len(classifiers)) + " HE ", hypEstimation, "error ", errT, " validation ", validation)
+
+                                elapsed_time = time.time() - start_time
+                                t = time.localtime()
+                                current_time = time.strftime("%H:%M:%S", t)
+                                print("end -", current_time)
+                                print("all time: ", elapsed_time)
+                                print("")
 
 
 print("last")
