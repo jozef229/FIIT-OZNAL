@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
+from sklearn.metrics import precision_score
 from scipy import stats
 from sklearn import datasets, metrics
 from sklearn.decomposition import PCA
@@ -382,15 +383,15 @@ classifiersParams = {
         "max_features": ["sqrt", "log2"],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 4), "C": [1, 10]},
-    # "SVM Linear": {
-    #     "kernel": ["linear"],
-    #     "degree": range(1, 4),
-    #     "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-    # },
     "SVM RBF": {
         "kernel": ["rbf"],
         "degree": range(1, 4),
         "gamma": np.logspace(-4, 3, 10),
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    },
+    "SVM Linear": {
+        "kernel": ["linear"],
+        "degree": range(1, 4),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
 }
@@ -436,15 +437,15 @@ classifiersParamsRandomSearch = {
         "max_features": ["sqrt", "log2", None],
     },
     "SVM Sigmoid": {"kernel": ["sigmoid"], "degree": range(1, 5), "C": [1, 10]},
-    # "SVM Linear": {
-    #     "kernel": ["linear"],
-    #     "degree": range(1, 4),
-    #     "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-    # },
     "SVM RBF": {
         "kernel": ["rbf"],
         "degree": range(1, 6),
         "gamma": np.logspace(-4, 3, 30),
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+    },
+    "SVM Linear": {
+        "kernel": ["linear"],
+        "degree": range(1, 4),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
 }
@@ -460,11 +461,11 @@ classifiersNames = [
     "Random Forest",
     "SVM Sigmoid",
     "SVM RBF",
+    "SVM Linear",
     "QDA",
     "Naive Bayes",
     "Linear Discriminant Analysis",
     "Gaussian Process",
-    "SVM Linear",
 ]
 
 classifiers = [
@@ -521,13 +522,14 @@ def printFinalTable(df_print, records, features, nameOutlier, nameFeatureSelecti
         "Feature Selection": featureSelectionName[nameFeatureSelection],
         "Features with FS": df_actual.shape[1],
         "Model": classifiersNames[nameIndex],
-        "ACC": accuracy_score(train, test),
-        "Recall macro": recall_score(train, test, average="macro"),
-        "Recall micro": recall_score(train, test, average="micro"),
-        "Recall weighted": recall_score(train, test, average="weighted"),
-        "F1 macro": f1_score(train, test, average="macro", labels=np.unique(test)),
-        "F1 micro": f1_score(train, test, average="micro", labels=np.unique(test)),
-        "F1 weighted": f1_score(train, test, average="weighted", labels=np.unique(test))}, ignore_index=True)
+        "Accurancy score": accuracy_score(test, train),
+        "Recall score": recall_score(test, train, average="micro"),
+        "F1 score": f1_score(test, train, average="micro", labels=np.unique(test)),
+        "Precision score": precision_score(test, train, average='micro')}, ignore_index=True)
+
+
+np.mean(cross_val_score(estimator, X.iloc[:, ma.make_mask(
+    chromosom)], y, cv=10, scoring="accuracy", n_jobs=-1))
 
 
 def classificationModel(validation, typeModel, X, y, heNumber, iteration=20):
@@ -575,8 +577,10 @@ df_stats_model = pd.DataFrame()
 for isAddedColumn in range(len(isColumnAdd)):
     train_mobile = pd.read_csv('dataset/mobile/train.csv')
     main_value = 'price_range'
+    y_stratify = loan[main_value]
 
-    train, test = train_test_split(train_mobile, test_size=0.2)
+    train, test = train_test_split(
+        train_mobile, test_size=0.1, stratify=y_stratify)
     y_test = test[main_value]
     initialProduct = train_mobile.shape[0] - 1
     initialFeature = train_mobile.shape[1]
