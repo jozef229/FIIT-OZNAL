@@ -364,19 +364,6 @@ classifiersParams = {
         "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
         "n_jobs": [-1],
     },
-    "Logistic Regression": {
-        "penalty": ["l1", "l2", "elasticnet"],
-        "C": np.logspace(-5, 5, 15),
-        "solver": ['saga'],
-        "l1_ratio": [0, 1],
-    },
-    "Neural Net": {
-        "solver": ["lbfgs", "sgd", "adam"],
-        "max_iter": [1000, 1800],
-        "alpha": 10.0 ** -np.arange(1, 4),
-        "hidden_layer_sizes": np.arange(10, 13),
-        "random_state": [0, 1, 3, 6],
-    },
     "Random Forest": {
         "max_depth": range(20, 60, 6),
         "n_estimators": range(20, 60, 6),
@@ -387,11 +374,6 @@ classifiersParams = {
         "kernel": ["rbf"],
         "degree": range(1, 4),
         "gamma": np.logspace(-4, 3, 10),
-        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-    },
-    "SVM Linear": {
-        "kernel": ["linear"],
-        "degree": range(1, 4),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
 }
@@ -418,19 +400,6 @@ classifiersParamsRandomSearch = {
         "algorithm": ["auto", "kd_tree", "ball_tree", "brute"],
         "n_jobs": [-1],
     },
-    "Logistic Regression": {
-        "penalty": ["l1", "l2", "elasticnet"],
-        "C": np.logspace(-5, 5),
-        "solver": ['saga'],
-        "l1_ratio": [0, 1],
-    },
-    "Neural Net": {
-        "solver": ["lbfgs", "sgd", "adam"],
-        "max_iter": [1000, 1400, 1800, 2000, 2500, 3000],
-        "alpha": 10.0 ** -np.arange(1, 5),
-        "hidden_layer_sizes": np.arange(10, 14),
-        "random_state": [0, 1, 3, 6, 9],
-    },
     "Random Forest": {
         "max_depth": range(20, 70),
         "n_estimators": range(10, 70),
@@ -443,11 +412,6 @@ classifiersParamsRandomSearch = {
         "gamma": np.logspace(-4, 3, 30),
         "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
     },
-    "SVM Linear": {
-        "kernel": ["linear"],
-        "degree": range(1, 4),
-        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-    },
 }
 
 
@@ -456,12 +420,9 @@ classifiersNames = [
     "Decision Tree",
     "Extra Trees",
     "Nearest Neighbors",
-    "Logistic Regression",
-    "Neural Net",
     "Random Forest",
     "SVM Sigmoid",
     "SVM RBF",
-    "SVM Linear",
     "QDA",
     "Naive Bayes",
     "Linear Discriminant Analysis",
@@ -474,13 +435,8 @@ classifiers = [
     ExtraTreesClassifier(n_estimators=5, criterion="entropy", max_features=2),
 
     KNeighborsClassifier(),
-    LogisticRegression(
-        penalty="l1", dual=False, max_iter=110, solver="liblinear", multi_class="auto"
-    ),
-    MLPClassifier(alpha=1, max_iter=1000),
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
     SVC(kernel="sigmoid", gamma=2),
-    SVC(kernel="linear", C=0.025),
     SVC(kernel="rbf", gamma=2, C=1),
     QuadraticDiscriminantAnalysis(),
     GaussianNB(),
